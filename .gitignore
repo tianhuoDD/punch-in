@@ -1,5 +1,5 @@
-# 配置上传git时忽略的文件
-# Logs
+# git忽略格式化的文件
+# 忽略Logs
 logs
 *.log
 npm-debug.log*
@@ -8,26 +8,21 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-.DS_Store
-dist
-dist-ssr
-coverage
-*.local
-
-/cypress/videos/
-/cypress/screenshots/
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+# 忽略编辑器目录和文件
 .idea
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
 *.tsbuildinfo
 
-android
+# 忽略仓库依赖包
+node_modules
+
+# 忽略依赖锁文件
+pnpm-lock.yaml
+package-lock.json
+
+# 忽略生成的构建缓存
+.vite

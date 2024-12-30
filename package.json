@@ -1,37 +1,60 @@
 {
-  "name": "punch-in",
-  "version": "0.0.1",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite --open",
-    "build": "vite build",
-    "preview": "vite preview",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
-  },
-  "dependencies": {
-    "@capacitor/android": "^6.1.2",
-    "@capacitor/cli": "^6.1.2",
-    "@capacitor/core": "^6.1.2",
-    "amfe-flexible": "^2.2.1",
-    "axios": "^1.7.7",
-    "pinia": "^2.1.7",
-    "postcss-pxtorem": "^6.1.0",
-    "vant": "^4.9.6",
-    "vue": "^3.4.29",
-    "vue-router": "^4.3.3"
-  },
-  "devDependencies": {
-    "@rushstack/eslint-patch": "^1.8.0",
-    "@vant/auto-import-resolver": "^1.2.1",
-    "@vitejs/plugin-vue": "^5.0.5",
-    "@vue/eslint-config-prettier": "^9.0.0",
-    "eslint": "^8.57.0",
-    "eslint-plugin-vue": "^9.23.0",
-    "prettier": "^3.3.3",
-    "unplugin-auto-import": "^0.18.3",
-    "unplugin-vue-components": "^0.27.4",
-    "vite": "^5.3.1"
-  }
+	"name": "punch-in",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite --open",
+		"build": "vite build",
+		"preview": "vite preview",
+		"lint:eslint": "eslint . --fix",
+		"lint:prettier": "prettier --write .",
+		"prepare": "husky",
+		"lint:lint-staged": "lint-staged",
+		"commit": "git-cz"
+	},
+	"lint-staged": {
+		"*.{js,ts,vue}": [
+			"eslint --fix",
+			"prettier --write"
+		],
+		"*.{cjs,json}": [
+			"prettier --write"
+		],
+		"*.{vue,html}": [
+			"eslint --fix",
+			"prettier --write"
+		],
+		"*.{scss,css}": [
+			"prettier --write"
+		],
+		"*.md": [
+			"prettier --write"
+		]
+	},
+	"dependencies": {
+		"@capacitor/android": "^6.1.2",
+		"@capacitor/cli": "^6.1.2",
+		"@capacitor/core": "^6.1.2",
+		"amfe-flexible": "^2.2.1",
+		"axios": "^1.7.7",
+		"pinia": "^2.1.7",
+		"postcss-pxtorem": "^6.1.0",
+		"vant": "^4.9.6",
+		"vue": "^3.4.29",
+		"vue-router": "^4.3.3"
+	},
+	"devDependencies": {
+		"@vant/auto-import-resolver": "^1.2.1",
+		"@vitejs/plugin-vue": "^5.0.5",
+		"@vue/eslint-config-prettier": "^9.0.0",
+		"commitizen": "^4.3.1",
+		"commitlint": "^19.6.1",
+		"cz-git": "^1.11.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^15.2.10",
+		"unplugin-auto-import": "^0.18.3",
+		"unplugin-vue-components": "^0.27.4",
+		"vite": "^5.3.1"
+	}
 }
