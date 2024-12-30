@@ -1,5 +1,5 @@
 {
-  "appId": "com.romcere.app",
-  "appName": "PunchIn",
-  "webDir": "dist"
+	"appId": "com.romcere.app",
+	"appName": "PunchIn",
+	"webDir": "dist"
 }
