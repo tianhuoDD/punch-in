@@ -36,6 +36,7 @@
 		"@capacitor/android": "^6.1.2",
 		"@capacitor/cli": "^6.1.2",
 		"@capacitor/core": "^6.1.2",
+		"@rom/axios": "workspace:^",
 		"amfe-flexible": "^2.2.1",
 		"axios": "^1.7.7",
 		"pinia": "^2.1.7",

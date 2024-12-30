@@ -1,8 +1,13 @@
 {
 	"compilerOptions": {
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"target": "ES6",
+		/* 路径别名，输入别名可自动补全 */
 		"paths": {
 			"@/*": ["./src/*"]
 		}
 	},
+	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist"]
 }

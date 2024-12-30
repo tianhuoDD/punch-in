@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	plugins: {
 		"postcss-pxtorem": {
 			rootValue: 37.5, // 设计稿的基准值，一般为 37.5 或 75，具体看设计稿的大小
