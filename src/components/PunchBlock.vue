@@ -1,33 +1,25 @@
 <template>
-	<van-card :thumb="thumb">
-		<!-- 自定义描述内容和右侧图标 -->
+	<van-card class="punch-card">
 		<template #desc>
-			<div class="card-desc">
-				<div class="card-title">{{ title }}</div>
-				<div class="desc-content">
-					<span class="description-text">{{ description }}</span>
-					<van-icon
-						name="success"
-						:color="iconColor"
-						class="check-icon"
-						aria-label="Toggle Check Status"
-						@click="toggleCheck"
-					/>
-				</div>
-				<div class="time-text">{{ createdAt }}</div>
-			</div>
+			<van-row class="card-row">
+				<van-col span="22" class="card-col">
+					<img :src="test" style="width: 30px; height: 30px" />
+					{{ title }}
+				</van-col>
+				<van-col span="2"> {{ description }} </van-col>
+			</van-row>
 		</template>
 	</van-card>
 </template>
 
 <script setup>
-import { ref, computed, defineProps, defineEmits } from "vue";
-
+import { ref, computed } from "vue";
+import test from "@/assets/icons/test.svg";
 // 定义组件接收的props
-const props = defineProps({
+defineProps({
 	thumb: {
 		type: String,
-		required: false,
+		required: true,
 	},
 	title: {
 		type: String,
@@ -60,39 +52,23 @@ const toggleCheck = () => {
 </script>
 
 <style scoped>
-.card-desc {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
+.punch-card {
+	max-height: 60px;
+	padding: 0;
 }
-
-.card-title {
-	font-size: 16px;
-	font-weight: bold;
+.punch-card :deep(.van-card__header),
+.punch-card :deep(.van-card__content) {
+	min-height: 60px !important;
 }
-
-.desc-content {
-	display: flex;
-	justify-content: space-between;
+.punch-card :deep(.van-card__content) div {
+	height: 100%;
+}
+.punch-card .van-col {
 	align-items: center;
+	display: flex;
 }
-
-.description-text {
-	flex: 1;
-	word-break: break-word;
-	white-space: normal;
-	margin-right: 8px;
-	font-size: 14px;
-	color: #555;
-}
-
 .check-icon {
 	font-size: 24px;
 	cursor: pointer;
-}
-
-.time-text {
-	font-size: 12px;
-	color: #999;
 }
 </style>

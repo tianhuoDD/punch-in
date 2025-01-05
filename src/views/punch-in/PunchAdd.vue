@@ -27,7 +27,7 @@ import { showToast } from "vant";
 import { ref } from "vue";
 import { useNavbarStore } from "@/stores/counter"; // 引入 Pinia
 import router from "@/router";
-import { addClockInApi } from "@/api/punchin";
+import { postClockInApi } from "@/apis/punch-in";
 // 获取导航栏 store 实例
 const navbarStore = useNavbarStore();
 // 设置导航栏按钮显示状态
@@ -68,7 +68,7 @@ const addClockIn = async () => {
 		// 获取图片文件，如果有的话
 		const img = fileList.value.length > 0 ? fileList.value[0] : null;
 		// 发送请求到后端存储打卡内容
-		const response = await addClockInApi({
+		const response = await postClockInApi({
 			title: title.value.trim(),
 			content: clockInContent.value.trim(),
 			img: img,

@@ -32,10 +32,10 @@
 		</div>
 		<!-- 底部导航栏 -->
 		<van-tabbar v-model="active" route class="bottom-tabbar">
-			<van-tabbar-item replace to="/PunchIn" icon="home-o" style="background-color: #f5f5f5 !important"
+			<van-tabbar-item replace to="/punch-in" icon="home-o" style="background-color: #f5f5f5 !important"
 				>打卡</van-tabbar-item
 			>
-			<van-tabbar-item replace to="/RecordBills" icon="search" style="background-color: #f5f5f5 !important"
+			<van-tabbar-item replace to="/record-bills" icon="search" style="background-color: #f5f5f5 !important"
 				>记账</van-tabbar-item
 			>
 		</van-tabbar>
@@ -57,7 +57,7 @@ const active = ref(0);
 // 处理左侧按钮点击事件
 const goBack = () => {
 	showToast("返回");
-	router.push("/PunchIn");
+	router.push("/punch-in");
 	// 设置左侧按钮显示为 false
 	navbarStore.toggleLeftButton(false);
 };
@@ -77,7 +77,7 @@ const onSelectAction = (action) => {
 	if (action.name === "新增") {
 		// 处理“新增”选项的逻辑
 		showToast("点击了新增");
-		router.push("/PunchAdd");
+		router.push("/punch-add");
 	} else {
 		console.log(`选择了 ${action.name}`);
 	}

@@ -4,4 +4,4 @@
 
 ## 项目环境
 
-vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem
+vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem + svg-sprite-loader

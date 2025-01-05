@@ -1,11 +1,21 @@
 // src/utils/request.js
-import axios from "axios";
+import romAxios from "@rom/axios";
 import { Toast } from "vant";
-
-const service = axios.create({
+romAxios.initAxios({
 	baseURL: import.meta.env.VITE_APP_BASE_API, // 基础路径，可在 .env 文件中配置
 	timeout: 5000, // 请求超时时间
 });
+romAxios.addResponseInterceptor(
+	(data) => {
+		return Promise.resolve(data);
+	},
+	({ errMsg, response }) => {
+		Toast.fail(errMsg);
+		console.error("错误的response：", response);
+	},
+);
+export default romAxios;
+
 /* 
 2xx 成功：
 
@@ -26,30 +36,3 @@ const service = axios.create({
     500 Internal Server Error：服务器内部错误。
     503 Service Unavailable：服务不可用。
 */
-
-// 请求拦截器
-service.interceptors.request.use(
-	(config) => {
-		// 在发送请求之前做些什么，比如添加 token
-		return config;
-	},
-	(error) => {
-		// 处理请求错误
-		return Promise.reject(error);
-	},
-);
-
-// 响应拦截器
-service.interceptors.response.use(
-	(response) => {
-		// 对响应数据做些什么
-		return response.data;
-	},
-	(error) => {
-		Toast.fail(error.message || "请求失败");
-		// 处理响应错误
-		return Promise.reject(error);
-	},
-);
-
-export default service;

@@ -30,7 +30,7 @@
 import PunchBlock from "@/components/PunchBlock.vue";
 import { useNavbarStore } from "@/stores/counter"; // 引入 Pinia store
 import { ref, onMounted } from "vue";
-import { getAllClockInsApi } from "@/api/punchin";
+import { getClockInsApi } from "@/apis/punch-in";
 import { showToast } from "vant";
 
 // 获取导航栏 store 实例
@@ -55,7 +55,7 @@ const isLoading = ref(false); // 加载状态
 const fetchClockIns = async (page, perPageCount) => {
 	isLoading.value = true;
 	try {
-		const response = await getAllClockInsApi({
+		const response = await getClockInsApi({
 			page,
 			per_page: perPageCount,
 		});
