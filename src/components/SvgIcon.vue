@@ -15,3 +15,10 @@ defineProps({
 	},
 });
 </script>
+<style scoped>
+svg {
+	width: 30px;
+	height: 30px;
+	padding: 10px;
+}
+</style>
