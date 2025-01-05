@@ -3,7 +3,7 @@ import romAxios from "@rom/axios";
 import { Toast } from "vant";
 romAxios.initAxios({
 	baseURL: import.meta.env.VITE_APP_BASE_API, // 基础路径，可在 .env 文件中配置
-	timeout: 5000, // 请求超时时间
+	timeout: 20000, // 请求超时时间
 });
 romAxios.addResponseInterceptor(
 	(data) => {

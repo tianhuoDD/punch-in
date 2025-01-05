@@ -15,9 +15,6 @@ import Vant from "vant";
 import "vant/lib/index.css";
 app.use(Vant);
 
-// 移动端适配引入
-import "amfe-flexible";
-
 app.mount("#app");
 
 // vite-plugin-svg-icons 必要的配置

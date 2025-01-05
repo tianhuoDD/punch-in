@@ -26,3 +26,7 @@ package-lock.json
 
 # 忽略生成的构建缓存
 .vite
+
+# 忽略打包文件
+dist
+android

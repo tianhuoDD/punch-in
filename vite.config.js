@@ -2,22 +2,26 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
+/* 按需引入插件 */
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { VantResolver } from "@vant/auto-import-resolver";
 
+/* SVG 图标插件 */
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
 		vue(),
+		// 配置按需引入插件
 		AutoImport({
 			resolvers: [VantResolver()],
 		}),
 		Components({
 			resolvers: [VantResolver()],
 		}),
+		// 配置svg图标插件
 		createSvgIconsPlugin({
 			// 指定需要缓存的svg图标文件目录
 			iconDirs: [path.resolve(process.cwd(), "src/assets/icons")], // 指定symbolId格式
