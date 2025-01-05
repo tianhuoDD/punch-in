@@ -6,6 +6,8 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { VantResolver } from "@vant/auto-import-resolver";
 
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
@@ -15,6 +17,15 @@ export default defineConfig({
 		}),
 		Components({
 			resolvers: [VantResolver()],
+		}),
+		createSvgIconsPlugin({
+			// 指定需要缓存的svg图标文件目录
+			iconDirs: [path.resolve(process.cwd(), "src/assets/icons")], // 指定symbolId格式
+			symbolId: "icon-[name]",
+			// 设置为true时，可以自定义插入的位置
+			inject: "body-first",
+			// 自定义插入的内容
+			customDomId: "svg-icons-dom",
 		}),
 	],
 	server: {

@@ -3,7 +3,7 @@
 		<template #desc>
 			<van-row class="card-row">
 				<van-col span="22" class="card-col">
-					<img :src="test" style="width: 30px; height: 30px" />
+					<svg-icon name="test" />
 					{{ title }}
 				</van-col>
 				<van-col span="2"> {{ description }} </van-col>
@@ -14,7 +14,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import test from "@/assets/icons/test.svg";
+import SvgIcon from "@/components/SvgIcon.vue";
 // 定义组件接收的props
 defineProps({
 	thumb: {

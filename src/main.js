@@ -19,3 +19,6 @@ app.use(Vant);
 import "amfe-flexible";
 
 app.mount("#app");
+
+// vite-plugin-svg-icons 必要的配置
+import "virtual:svg-icons-register";
