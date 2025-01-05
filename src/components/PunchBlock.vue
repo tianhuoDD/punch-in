@@ -2,11 +2,14 @@
 	<van-card class="punch-card">
 		<template #desc>
 			<van-row class="card-row">
-				<van-col span="22" class="card-col">
+				<van-col span="20" class="card-col">
 					<svg-icon name="test" />
-					{{ title }}
+					<span class="title">{{ title }}</span>
 				</van-col>
-				<van-col span="2"> {{ description }} </van-col>
+				<van-col span="4" class="vertical">
+					<span class="day-title">{{ description }} 天</span>
+					<span> 共计坚持 </span>
+				</van-col>
 			</van-row>
 		</template>
 	</van-card>
@@ -34,21 +37,6 @@ defineProps({
 		required: true,
 	},
 });
-
-// 定义事件
-const emit = defineEmits(["update:checked"]);
-
-// 定义是否已打卡的状态
-const isChecked = ref(false);
-
-// 计算图标颜色
-const iconColor = computed(() => (isChecked.value ? "green" : "gray"));
-
-// 切换打卡状态并通知父组件
-const toggleCheck = () => {
-	isChecked.value = !isChecked.value;
-	emit("update:checked", isChecked.value);
-};
 </script>
 
 <style scoped>
@@ -67,8 +55,25 @@ const toggleCheck = () => {
 	align-items: center;
 	display: flex;
 }
-.check-icon {
-	font-size: 24px;
-	cursor: pointer;
+/* 卡片背景颜色 */
+.card-row {
+	background-color: #e17e55;
+	border: 1.5px solid black;
+}
+/* 标题文字 */
+.title {
+	font-size: 16px;
+	font-weight: bold;
+}
+.day-title {
+	font-size: 18px;
+	font-weight: bold;
+}
+/* 新增垂直排列的样式 */
+.vertical {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 </style>
