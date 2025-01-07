@@ -23,6 +23,11 @@ const router = createRouter({
 					name: "record-bills",
 					component: () => import("@/views/record-bills/index.vue"),
 				},
+				{
+					path: "/user-info",
+					name: "user-info",
+					component: () => import("@/views/user-info/index.vue"),
+				},
 			],
 		},
 	],

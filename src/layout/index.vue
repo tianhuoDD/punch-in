@@ -32,12 +32,15 @@
 		</div>
 		<!-- 底部导航栏 -->
 		<van-tabbar v-model="active" route class="bottom-tabbar">
-			<van-tabbar-item replace to="/punch-in" icon="home-o" style="background-color: #f5f5f5 !important"
-				>打卡</van-tabbar-item
-			>
-			<van-tabbar-item replace to="/record-bills" icon="label-o" style="background-color: #f5f5f5 !important"
-				>记账</van-tabbar-item
-			>
+			<van-tabbar-item replace to="/record-bills" icon="label-o" style="background-color: #f5f5f5 !important">
+				记账
+			</van-tabbar-item>
+			<van-tabbar-item replace to="/punch-in" icon="home-o" style="background-color: #f5f5f5 !important">
+				打卡
+			</van-tabbar-item>
+			<van-tabbar-item replace to="/user-info" icon="contact-o" style="background-color: #f5f5f5 !important">
+				我的
+			</van-tabbar-item>
 		</van-tabbar>
 	</div>
 </template>

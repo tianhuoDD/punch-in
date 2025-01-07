@@ -27,33 +27,48 @@
 import { ref, onMounted } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 // 定义组件接收的props
-defineProps({
+const props = defineProps({
+	// 显示的图标名称
 	svg: {
 		type: String,
 		required: true,
 	},
+	// 打卡标题
 	title: {
 		type: String,
 		required: true,
 		default: "打卡标题",
 	},
+	// 打卡天数
 	day: {
 		type: Number,
 		required: true,
 		default: 1,
 	},
+	// 是否打卡
+	isPunch: {
+		type: Boolean,
+		required: true,
+		default: false,
+	},
 });
-// 响应式变量
-const isActive = ref(false); // 用于控制颜色切换
-const isAnimated = ref(false); // 用于触发动画
-
+const isAnimated = ref(false);
+const isActive = ref(false);
+const emit = defineEmits(["update:isPunch"]);
+// 点击打卡按钮
 const handlePunchClick = () => {
 	isActive.value = !isActive.value; // 切换颜色
 	isAnimated.value = true; // 开启动画
 	setTimeout(() => {
 		isAnimated.value = false; // 结束动画
 	}, 300); // 动画持续时间与CSS一致
+	// 通知父组件打卡状态变化
+	emit("update:isPunch", isActive.value);
 };
+onMounted(() => {
+	// 初始化打卡按钮状态
+	isActive.value = props.isPunch;
+});
 </script>
 
 <style scoped>
