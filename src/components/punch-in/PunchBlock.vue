@@ -11,7 +11,12 @@
 					<span> 共计坚持 </span>
 				</van-col>
 				<van-col span="4" class="vertical">
-					<svg-icon name="PunchBtn" color="green" />
+					<svg-icon
+						name="PunchBtn"
+						:color="isActive ? 'green' : 'white'"
+						:class="{ animated: isAnimated }"
+						@click="handlePunchClick"
+					/>
 				</van-col>
 			</van-row>
 		</template>
@@ -19,6 +24,7 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 // 定义组件接收的props
 defineProps({
@@ -37,6 +43,17 @@ defineProps({
 		default: 1,
 	},
 });
+// 响应式变量
+const isActive = ref(false); // 用于控制颜色切换
+const isAnimated = ref(false); // 用于触发动画
+
+const handlePunchClick = () => {
+	isActive.value = !isActive.value; // 切换颜色
+	isAnimated.value = true; // 开启动画
+	setTimeout(() => {
+		isAnimated.value = false; // 结束动画
+	}, 300); // 动画持续时间与CSS一致
+};
 </script>
 
 <style scoped>
@@ -79,5 +96,22 @@ defineProps({
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+/* 动画效果 */
+.animated {
+	animation: scaleUp 0.3s ease;
+}
+
+/* 动画定义 */
+@keyframes scaleUp {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 </style>
