@@ -6,29 +6,6 @@ const router = createRouter({
 		{
 			path: "/",
 			component: Layout,
-			redirect: "/punch-in",
-			children: [
-				{
-					path: "/punch-in",
-					name: "punch-in",
-					component: () => import("@/views/punch-in/index.vue"),
-				},
-				{
-					path: "/punch-add",
-					name: "punch-add",
-					component: () => import("@/views/punch-in/PunchAdd.vue"),
-				},
-				{
-					path: "/record-bills",
-					name: "record-bills",
-					component: () => import("@/views/record-bills/index.vue"),
-				},
-				{
-					path: "/user-info",
-					name: "user-info",
-					component: () => import("@/views/user-info/index.vue"),
-				},
-			],
 		},
 	],
 });
