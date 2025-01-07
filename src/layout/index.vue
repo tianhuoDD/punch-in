@@ -26,7 +26,7 @@
 			@select="onSelectAction"
 		/>
 		<!-- 实际页面内容 -->
-		<div class="main-content">
+		<div>
 			<!-- 实际页面内容 -->
 			<router-view />
 		</div>
@@ -35,7 +35,7 @@
 			<van-tabbar-item replace to="/punch-in" icon="home-o" style="background-color: #f5f5f5 !important"
 				>打卡</van-tabbar-item
 			>
-			<van-tabbar-item replace to="/record-bills" icon="search" style="background-color: #f5f5f5 !important"
+			<van-tabbar-item replace to="/record-bills" icon="label-o" style="background-color: #f5f5f5 !important"
 				>记账</van-tabbar-item
 			>
 		</van-tabbar>

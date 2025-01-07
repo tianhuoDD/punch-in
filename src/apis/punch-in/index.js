@@ -1,17 +1,19 @@
 import romAxios from "../request";
-// 获得所有打卡卡片
-export const getClockInsApi = async ({ page = 1, per_page = 20 } = {}) => {
-	const res = await romAxios.requestJson(romAxios.get, "/getAllClockIns", { page, per_page });
-	return res; // 由于成功拦截器返回的是 response.data，这里 res 是 response.data
+// 获取所有打卡记录
+export const getPunchRecordsApi = async () => {
+	const res = await romAxios.requestJson(romAxios.get, "/punch_records/");
+	return res; // 返回 response.data
 };
-// 新增打卡卡片
-export const postClockInApi = async ({ title, content, img }) => {
-	const formData = new FormData();
-	formData.append("title", title);
-	formData.append("content", content);
-	if (img && img.file) {
-		formData.append("img", img.file);
-	}
-	const res = await romAxios.requestForm(romAxios.post, "/addClockIn", formData);
-	return res; // 由于成功拦截器返回的是 response.data，这里 res 是 response.data
+
+// 获取单个打卡记录
+export const getPunchRecordByIdApi = async (recordId) => {
+	const res = await romAxios.requestJson(romAxios.get, `/punch_records/${recordId}`);
+	return res;
+};
+
+// 创建新的打卡记录
+export const createPunchRecordApi = async ({ title }) => {
+	const data = { title };
+	const res = await romAxios.requestJson(romAxios.post, "/punch_records/", data);
+	return res;
 };

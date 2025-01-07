@@ -133,6 +133,8 @@ export default {
 
 ### SVG图标引入
 
+> 有待优化：[vite-plugin-svg-icons 插件导致项目打包慢了6倍](https://github.com/vbenjs/vite-plugin-svg-icons/issues/112)
+
 ```shell
 pnpm -F=punch-in add -D vite-plugin-svg-icons
 ```
@@ -200,3 +202,7 @@ defineProps({
 import SvgIcon from "@/components/SvgIcon.vue";
 </script>
 ```
+
+## 项目存在的问题
+
+1. 优化svg图标引入，更换其他依赖；以减少build时间、fill颜色替换问题等。

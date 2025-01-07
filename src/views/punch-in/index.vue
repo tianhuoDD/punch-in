@@ -2,36 +2,16 @@
 	<div class="clock-in-list-container">
 		<!-- 打卡记录列表 -->
 		<div>
-			<PunchBlock
-				v-for="(record, index) in records"
-				:key="index"
-				:thumb="record.img"
-				:title="record.title"
-				:description="record.content"
-				:created-at="record.createdAt"
-			/>
+			<PunchBlock v-for="(record, index) in records" :key="index" :title="record.title" :day="record.day" />
 		</div>
-		<!-- 分页控件 -->
-		<van-pagination
-			v-if="totalPages > 1"
-			v-model="currentPage"
-			:total-items="totalRecords"
-			:items-per-page="perPage"
-			:page-sizes="[10, 20, 50]"
-			mode="simple"
-			class="pagination"
-			@change="handlePageChange"
-			@page-size-change="handlePageSizeChange"
-		/>
 	</div>
 </template>
 
 <script setup>
-import PunchBlock from "@/components/PunchBlock.vue";
-import { useNavbarStore } from "@/stores/counter"; // 引入 Pinia store
 import { ref, onMounted } from "vue";
-import { getClockInsApi } from "@/apis/punch-in";
-import { showToast } from "vant";
+import PunchBlock from "@/components/punch-in/PunchBlock.vue";
+import { useNavbarStore } from "@/stores/counter"; // 引入 Pinia store
+import { getPunchRecordsApi } from "@/apis/punch-in";
 
 // 获取导航栏 store 实例
 const navbarStore = useNavbarStore();
@@ -41,63 +21,48 @@ navbarStore.toggleRightButton(true);
 
 // 定义响应式变量
 const records = ref([]); // 存储打卡记录
-const currentPage = ref(1); // 当前页数
-const perPage = ref(10); // 每页记录数
-const totalRecords = ref(0); // 总记录数
-const totalPages = ref(1); // 总页数
 const isLoading = ref(false); // 加载状态
 
-/**
- * 获取打卡记录的函数
- * @param {number} page - 页码
- * @param {number} perPageCount - 每页记录数
- */
-const fetchClockIns = async (page, perPageCount) => {
+// 获取打卡记录的函数
+const fetchClockIns = async () => {
 	isLoading.value = true;
 	try {
-		const response = await getClockInsApi({
-			page,
-			per_page: perPageCount,
-		});
-		if (response.code === 200) {
-			records.value = response.data.records;
-			totalRecords.value = response.data.pagination.total_records;
-			totalPages.value = response.data.pagination.total_pages;
-		} else {
-			showToast(`加载失败: ${response.message}`);
-			records.value = [];
-		}
-	} catch (error) {
-		console.error("获取打卡记录失败:", error);
-		showToast("网络错误，请稍后重试");
+		const data = await getPunchRecordsApi();
+		records.value = processRecords(data);
+		console.log(records.value);
+	} catch {
 		records.value = [];
 	} finally {
 		isLoading.value = false;
 	}
 };
-
 /**
- * 处理页码变化
- * @param {number} page - 新的页码
+ * 处理打卡记录，计算每条记录的坚持天数并添加到记录中
+ * @param {Array} data - 从后端获取的打卡记录数组
+ * @returns {Array} - 处理后的打卡记录数组
  */
-const handlePageChange = (page) => {
-	currentPage.value = page;
-	fetchClockIns(page, perPage.value);
-};
+function processRecords(data) {
+	return data.map((record) => {
+		const createdAt = new Date(record.created_at); // 记录创建时间
+		let day = 0;
 
-/**
- * 处理每页记录数变化
- * @param {number} size - 新的每页记录数
- */
-const handlePageSizeChange = (size) => {
-	perPage.value = size;
-	currentPage.value = 1; // 重置到第一页
-	fetchClockIns(1, size);
-};
+		if (record.punch_times && record.punch_times.length > 0) {
+			const lastPunchTimeStr = record.punch_times[record.punch_times.length - 1];
+			const lastPunchTime = new Date(lastPunchTimeStr); // 最后一次打卡时间
 
+			// 计算时间差（以毫秒为单位）
+			const diffTime = lastPunchTime - createdAt;
+
+			// 计算相差的天数
+			day = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+		}
+
+		return { ...record, day };
+	});
+}
 // 在组件挂载时获取初始数据
 onMounted(() => {
-	fetchClockIns(currentPage.value, perPage.value);
+	fetchClockIns();
 });
 </script>
 

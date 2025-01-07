@@ -2,13 +2,16 @@
 	<van-card class="punch-card">
 		<template #desc>
 			<van-row class="card-row">
-				<van-col span="20" class="card-col">
+				<van-col span="16">
 					<svg-icon name="test" />
 					<span class="title">{{ title }}</span>
 				</van-col>
 				<van-col span="4" class="vertical">
-					<span class="day-title">{{ description }} 天</span>
+					<span class="day-title">{{ day + 1 }} 天</span>
 					<span> 共计坚持 </span>
+				</van-col>
+				<van-col span="4" class="vertical">
+					<svg-icon name="PunchBtn" color="green" />
 				</van-col>
 			</van-row>
 		</template>
@@ -16,25 +19,22 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 // 定义组件接收的props
 defineProps({
-	thumb: {
+	svg: {
 		type: String,
 		required: true,
 	},
 	title: {
 		type: String,
 		required: true,
+		default: "打卡标题",
 	},
-	description: {
-		type: String,
+	day: {
+		type: Number,
 		required: true,
-	},
-	createdAt: {
-		type: String,
-		required: true,
+		default: 1,
 	},
 });
 </script>
@@ -59,6 +59,7 @@ defineProps({
 .card-row {
 	background-color: #e17e55;
 	border: 1.5px solid black;
+	border-radius: 5px;
 }
 /* 标题文字 */
 .title {
@@ -68,6 +69,9 @@ defineProps({
 .day-title {
 	font-size: 18px;
 	font-weight: bold;
+	white-space: nowrap; /* 防止换行 */
+	overflow: hidden; /* 隐藏溢出部分 */
+	text-overflow: ellipsis; /* 显示省略号 */
 }
 /* 新增垂直排列的样式 */
 .vertical {

@@ -1,6 +1,6 @@
 // src/utils/request.js
 import romAxios from "@rom/axios";
-import { Toast } from "vant";
+import { showToast } from "vant";
 romAxios.initAxios({
 	baseURL: import.meta.env.VITE_APP_BASE_API, // 基础路径，可在 .env 文件中配置
 	timeout: 20000, // 请求超时时间
@@ -10,7 +10,7 @@ romAxios.addResponseInterceptor(
 		return Promise.resolve(data);
 	},
 	({ errMsg, response }) => {
-		Toast.fail(errMsg);
+		showToast(errMsg);
 		console.error("错误的response：", response);
 	},
 );

@@ -36,7 +36,7 @@ export default defineConfig({
 		// 开发环境使用该代理设置
 		proxy: {
 			"/api": {
-				target: "http://127.0.0.1:5000/api", // 后端服务器地址
+				target: "http://127.0.0.1:5000", // 后端服务器地址
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, ""),
 			},
