@@ -19,3 +19,8 @@ app.mount("#app");
 
 // vite-plugin-svg-icons 必要的配置
 import "virtual:svg-icons-register";
+// 引入全局样式
+import "./styles/global.css";
+import "./styles/colors.css";
+
+import "@icon-park/vue-next/styles/index.css";

@@ -1,0 +1,19 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family:
+		PingFang SC,
+		Arial,
+		Microsoft YaHei,
+		sans-serif;
+	font-size: 14px;
+}
+html,
+body,
+#app {
+	height: 100%;
+}
+/* 移除浏览器提供的聚焦边框outline */
+:focus {
+	outline: none;
+}

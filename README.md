@@ -6,6 +6,10 @@ PunchIn - 致力于做一款打卡、记账等功能的app.
 
 vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem + svg-sprite-loader
 
+## 项目使用辅助
+
+1. 回退路由：`router.back()`
+
 ## 项目依赖
 
 > 这里列出的是后添加的依赖
@@ -134,6 +138,8 @@ export default {
 ### SVG图标引入
 
 > 有待优化：[vite-plugin-svg-icons 插件导致项目打包慢了6倍](https://github.com/vbenjs/vite-plugin-svg-icons/issues/112)
+>
+> 可查找SVG图标的网站：https://www.iconfont.cn/
 
 ```shell
 pnpm -F=punch-in add -D vite-plugin-svg-icons
@@ -200,6 +206,34 @@ defineProps({
 </template>
 <script setup>
 import SvgIcon from "@/components/SvgIcon.vue";
+</script>
+```
+
+### IconPark 图标库引入
+
+**1. 安装IconPark**
+
+```shell
+pnpm -F=punch-in add @icon-park/vue-next
+```
+
+**2. 在 main.js 中引入**
+
+```shell
+import "@icon-park/vue-next/styles/index.css";
+```
+
+**3. 使用方法**
+
+浏览[IconPark图标库](https://iconpark.oceanengine.com/official)找到想使用的图标，直接复制使用：
+
+```vue
+<template>
+	<bank-card theme="outline" size="24" fill="#333" :strokeWidth="3" />
+</template>
+
+<script setup>
+import { BankCard } from "@icon-park/vue-next";
 </script>
 ```
 

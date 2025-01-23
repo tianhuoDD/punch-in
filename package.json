@@ -34,6 +34,7 @@
 	},
 	"dependencies": {
 		"@capacitor/core": "^6.2.0",
+		"@icon-park/vue-next": "^1.4.2",
 		"@rom/axios": "workspace:^",
 		"axios": "^1.7.7",
 		"pinia": "^2.1.7",
