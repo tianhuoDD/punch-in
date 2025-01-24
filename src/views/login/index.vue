@@ -21,16 +21,33 @@
 		<!-- 分隔线 -->
 		<van-divider :style="{ color: 'var(--login-font-color)' }"> 使用 PunchIn 账户登录 </van-divider>
 		<!-- 登录表单 -->
-		<van-form style="margin-top: 20px" @submit="onSubmit">
+		<van-form style="margin-top: 20px" @submit="onLoginSubmit" @failed="onLoginFailed">
 			<van-cell-group inset>
-				<van-field v-model="username" label="用户名" placeholder="用户名 / 邮箱" />
-				<van-field v-model="password" type="password" label="密码" placeholder="密码" />
+				<van-field
+					v-model="username"
+					name="username"
+					label="用户名"
+					placeholder="用户名 / 邮箱"
+					:rules="usernameRules"
+				/>
+				<van-field
+					v-model="password"
+					name="password"
+					type="password"
+					label="密码"
+					placeholder="密码"
+					:rules="passwordRules"
+				/>
+				<van-field name="isProtocolChecked" label="复选框" :rules="protocolRules">
+					<template #input>
+						<van-checkbox v-model="isProtocolChecked" shape="square">
+							我同意 《PunchIn用户服务协议》《隐私权政策》
+						</van-checkbox>
+					</template>
+				</van-field>
 			</van-cell-group>
-			<van-checkbox-group v-model="isProtocolChecked" shape="square" style="margin: 20px 30px">
-				<van-checkbox name="a">我同意 《PunchIn用户服务协议》《隐私权政策》</van-checkbox>
-			</van-checkbox-group>
 			<div style="display: flex; justify-content: center; align-items: center">
-				<van-button plain type="primary" class="login-button">立即登录</van-button>
+				<van-button plain type="primary" native-type="submit" class="login-button">立即登录</van-button>
 			</div>
 		</van-form>
 		<!-- 注册、忘记密码按钮 -->
@@ -47,11 +64,45 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { closeToast, showLoadingToast, showToast } from "vant";
 import SvgIcon from "@/components/SvgIcon.vue";
-const router = useRouter();
-// 隐私协议复选框
-const isProtocolChecked = ref([]);
+import { loginApi } from "@/apis/login/index";
 
+const router = useRouter();
+/* punch-in 登录 */
+const username = ref("");
+const password = ref("");
+// 隐私协议复选框
+const isProtocolChecked = ref();
+// 表单验证规则
+const passwordValidator = (val) => {
+	return val.length >= 6 && val.length <= 20;
+};
+const usernameRules = [{ required: true, message: "请输入用户名/邮箱", trigger: "onBlur" }];
+const passwordRules = [
+	{ required: true, message: "请输入密码", trigger: "onBlur" },
+	{ validator: passwordValidator, message: "密码长度在6到20个字符之间", trigger: "onBlur" },
+];
+const protocolRules = [{ required: true, message: "请同意用户服务协议和隐私权政策", trigger: "onSubmit" }];
+// 提交表单
+const onLoginSubmit = async () => {
+	showLoadingToast("登录中...");
+	try {
+		const data = await loginApi({
+			username: username.value,
+			password: password.value,
+		});
+		showToast(data.message);
+	} catch (error) {
+		showToast(error);
+	}
+};
+const onLoginFailed = () => {
+	showLoadingToast("验证规则中...");
+	setTimeout(() => {
+		closeToast();
+	}, 0);
+};
 // 返回按钮点击事件
 const handleBackClick = () => {
 	router.back();
@@ -96,10 +147,6 @@ const handleBackClick = () => {
 }
 .login-wrapper :deep(.van-cell__title) {
 	display: none;
-}
-.login-wrapper .van-cell:last-child:after,
-.login-wrapper .van-cell--borderless:after {
-	display: block;
 }
 .login-wrapper .van-cell:after {
 	border-bottom: 1px solid var(--login-white-color);
