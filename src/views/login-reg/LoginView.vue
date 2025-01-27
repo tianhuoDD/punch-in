@@ -66,8 +66,10 @@ import "@/styles/FormField.css";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { loginApi } from "@/apis/login/index";
 import { useRulesStore } from "@/stores/rulesStores";
+import { useUserStore } from "@/stores/userStores";
 const router = useRouter();
 const rulesStore = useRulesStore();
+const userStore = useUserStore();
 /* punch-in 登录 */
 const username = ref("");
 const password = ref("");
@@ -85,8 +87,13 @@ const onLoginSubmit = async () => {
 			username: username.value,
 			password: password.value,
 		});
-		showToast(data.message);
-		router.push({ name: "index" });
+		if (data.token) {
+			userStore.setToken(data.token); // 存储 token
+			showToast(data.message);
+			router.push({ name: "index" });
+		} else {
+			showToast("没有token,登录失败...");
+		}
 	} catch (errMsg) {
 		showToast(errMsg);
 	}

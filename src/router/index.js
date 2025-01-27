@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { showToast } from "vant";
+import { useUserStore } from "@/stores/userStores";
 import Layout from "@/layout/index.vue";
 import loginLayout from "@/layout/login-layout/index.vue";
 const router = createRouter({
@@ -35,5 +37,19 @@ const router = createRouter({
 		},
 	],
 });
+// 全局路由守卫
+router.beforeEach((to, from, next) => {
+	const userStore = useUserStore();
+	const token = userStore.getToken();
 
+	// 判断是否需要认证
+	if (to.meta.requiresAuth && !token) {
+		// 如果需要认证并且没有 token，则跳转到登录页面
+		showToast("请先登录...");
+		next({ name: "login" });
+	} else {
+		// 否则继续访问
+		next();
+	}
+});
 export default router;
