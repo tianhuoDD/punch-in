@@ -87,8 +87,8 @@ const onLoginSubmit = async () => {
 		});
 		showToast(data.message);
 		router.push({ name: "index" });
-	} catch (error) {
-		showToast(error);
+	} catch (errMsg) {
+		showToast(errMsg);
 	}
 };
 const onLoginFailed = () => {

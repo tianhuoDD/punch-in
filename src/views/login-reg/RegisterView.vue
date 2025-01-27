@@ -50,6 +50,7 @@ import { closeToast, showLoadingToast, showToast } from "vant";
 import "@/styles/FormField.css";
 import CaptchaButton from "@/components/CaptchaButton.vue";
 import { useRulesStore } from "@/stores/rulesStores";
+import { registerApi } from "@/apis/login/index";
 const router = useRouter();
 const rulesStore = useRulesStore();
 const registerFormRef = ref();
@@ -81,8 +82,17 @@ const sendCaptcha = async (callback) => {
 	}
 };
 // 注册成功
-const onRegisterSubmit = () => {
-	showToast("已完成注册...");
+const onRegisterSubmit = async () => {
+	try {
+		const data = await registerApi({
+			username: username.value,
+			password: password.value,
+			email: email.value,
+		});
+		showToast(data.message);
+	} catch (errMsg) {
+		showToast(errMsg);
+	}
 };
 // 注册失败
 const onRegisterFailed = () => {

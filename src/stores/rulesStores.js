@@ -30,7 +30,6 @@ export const useRulesStore = defineStore("rules", () => {
 		}
 		// 将密码存储在 passwordRef 中
 		passwordRef.value = value;
-		console.log("密码存储成功");
 
 		return true;
 	};
@@ -45,7 +44,6 @@ export const useRulesStore = defineStore("rules", () => {
 		if (value !== password) {
 			return "两次密码输入不一致";
 		}
-		console.log("密码确认成功");
 
 		return true;
 	};
