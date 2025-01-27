@@ -103,9 +103,6 @@ const toRegister = () => {
 };
 </script>
 <style scoped>
-.login-wrapper {
-	height: 100%;
-}
 /* 欢迎文本样式 */
 .welcome-text span {
 	font-size: 40px;

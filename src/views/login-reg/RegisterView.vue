@@ -19,17 +19,20 @@
 				:rules="confirmPasswordRules"
 			/>
 			<van-field v-model="email" name="email" label="邮箱" placeholder="邮箱" :rules="emailRules" />
-			<div class="captcha-container">
-				<van-field
-					v-model="captcha"
-					name="captcha"
-					label="验证码"
-					placeholder="验证码"
-					:rules="captchaRules"
-					style="width: 60%"
-				/>
-				<captcha-button style="flex-grow: 1" @send-captcha="sendCaptcha" />
-			</div>
+
+			<van-field
+				v-model="captcha"
+				name="captcha"
+				label="验证码"
+				placeholder="验证码"
+				:rules="captchaRules"
+				class="captcha-container"
+			>
+				<template #button>
+					<captcha-button @send-captcha="sendCaptcha" />
+				</template>
+			</van-field>
+
 			<van-field name="protocol" label="复选框" :rules="protocolRules">
 				<template #input>
 					<van-checkbox v-model="isProtocolChecked" shape="square">
@@ -103,14 +106,9 @@ const onRegisterFailed = () => {
 };
 </script>
 <style scoped>
-.captcha-container {
-	display: flex;
-	align-items: flex-end;
-}
 .captcha-container :deep(button) {
 	background-color: transparent;
 	border-radius: 20px;
 	border-color: var(--login-font-color);
-	width: 80%;
 }
 </style>
