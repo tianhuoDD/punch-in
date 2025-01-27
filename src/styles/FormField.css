@@ -1,0 +1,40 @@
+/* 登录-注册表单样式 */
+.van-cell,
+.van-cell-group {
+	background-color: transparent;
+	caret-color: green;
+}
+.van-field__body {
+	font-size: 18px;
+}
+.van-cell__value input {
+	color: white;
+}
+.van-cell__value input::placeholder {
+	color: var(--login-font-color);
+}
+.van-cell__title {
+	display: none;
+}
+.van-cell:after {
+	border-bottom: 1px solid var(--login-white-color);
+	transform: none;
+}
+/* 登录-注册协议样式 */
+.van-checkbox__label {
+	color: var(--login-protocol-color) !important;
+	font-size: 12px;
+}
+.van-badge__wrapper {
+	border-radius: 5px;
+}
+/* 登录-注册按钮样式 */
+.login-reg-button {
+	font-size: 18px;
+	margin-top: 20px !important;
+	border-radius: 20px !important;
+	background: transparent !important;
+	color: var(--login-white-color) !important;
+	border-color: var(--login-font-color) !important;
+	width: 120px;
+}

@@ -1,8 +1,5 @@
 <template>
 	<div class="login-wrapper">
-		<div style="padding-top: 20px">
-			<svg-icon name="left-arrow" @click="handleBackClick" />
-		</div>
 		<!-- 欢迎文本 -->
 		<van-row class="welcome-text">
 			<span>你好，开发者!</span>
@@ -38,7 +35,7 @@
 					placeholder="密码"
 					:rules="passwordRules"
 				/>
-				<van-field name="isProtocolChecked" label="复选框" :rules="protocolRules">
+				<van-field name="protocol" label="复选框" :rules="protocolRules">
 					<template #input>
 						<van-checkbox v-model="isProtocolChecked" shape="square">
 							我同意 《PunchIn用户服务协议》《隐私权政策》
@@ -47,7 +44,7 @@
 				</van-field>
 			</van-cell-group>
 			<div style="display: flex; justify-content: center; align-items: center">
-				<van-button plain type="primary" native-type="submit" class="login-button">立即登录</van-button>
+				<van-button plain type="primary" native-type="submit" class="login-reg-button">立即登录</van-button>
 			</div>
 		</van-form>
 		<!-- 注册、忘记密码按钮 -->
@@ -55,7 +52,7 @@
 			<van-col :span="24">
 				<van-grid column-num="2">
 					<van-grid-item text="忘记密码" />
-					<van-grid-item text="注册账号" />
+					<van-grid-item text="注册账号" @click="toRegister" />
 				</van-grid>
 			</van-col>
 		</van-row>
@@ -65,26 +62,22 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { closeToast, showLoadingToast, showToast } from "vant";
+import "@/styles/FormField.css";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { loginApi } from "@/apis/login/index";
-
+import { useRulesStore } from "@/stores/rulesStores";
 const router = useRouter();
+const rulesStore = useRulesStore();
 /* punch-in 登录 */
 const username = ref("");
 const password = ref("");
 // 隐私协议复选框
 const isProtocolChecked = ref();
 // 表单验证规则
-const passwordValidator = (val) => {
-	return val.length >= 6 && val.length <= 20;
-};
-const usernameRules = [{ required: true, message: "请输入用户名/邮箱", trigger: "onBlur" }];
-const passwordRules = [
-	{ required: true, message: "请输入密码", trigger: "onBlur" },
-	{ validator: passwordValidator, message: "密码长度在6到20个字符之间", trigger: "onBlur" },
-];
-const protocolRules = [{ required: true, message: "请同意用户服务协议和隐私权政策", trigger: "onSubmit" }];
-// 提交表单
+const usernameRules = [{ validator: rulesStore.usernameValidate, trigger: "onBlur" }];
+const passwordRules = [{ validator: rulesStore.passwordValidate, trigger: "onBlur" }];
+const protocolRules = [{ validator: rulesStore.protocolValidate, trigger: "onSubmit" }];
+/* 提交表单成功或失败回调 */
 const onLoginSubmit = async () => {
 	showLoadingToast("登录中...");
 	try {
@@ -93,19 +86,20 @@ const onLoginSubmit = async () => {
 			password: password.value,
 		});
 		showToast(data.message);
+		router.push({ name: "index" });
 	} catch (error) {
 		showToast(error);
 	}
 };
 const onLoginFailed = () => {
-	showLoadingToast("验证规则中...");
+	showLoadingToast("验证表单规则中...");
 	setTimeout(() => {
 		closeToast();
 	}, 0);
 };
-// 返回按钮点击事件
-const handleBackClick = () => {
-	router.back();
+/* 跳转注册页面 */
+const toRegister = () => {
+	router.push({ name: "register" });
 };
 </script>
 <style scoped>
@@ -129,46 +123,6 @@ const handleBackClick = () => {
 	justify-content: center;
 	color: var(--login-white-color);
 	font-size: 16px;
-}
-/* 登录表单样式 */
-.login-wrapper .van-cell,
-.login-wrapper .van-cell-group {
-	background-color: transparent;
-	caret-color: green;
-}
-.login-wrapper :deep(.van-field__body) {
-	font-size: 18px;
-}
-.login-wrapper :deep(.van-cell__value) input {
-	color: white;
-}
-.login-wrapper :deep(.van-cell__value) input::placeholder {
-	color: var(--login-font-color);
-}
-.login-wrapper :deep(.van-cell__title) {
-	display: none;
-}
-.login-wrapper .van-cell:after {
-	border-bottom: 1px solid var(--login-white-color);
-	transform: none;
-}
-/* 登录协议样式 */
-.login-wrapper :deep(.van-checkbox__label) {
-	color: var(--login-protocol-color);
-	font-size: 12px;
-}
-.login-wrapper :deep(.van-badge__wrapper) {
-	border-radius: 5px;
-}
-/* 登录按钮样式 */
-.login-button {
-	font-size: 18px;
-	margin-top: 20px;
-	border-radius: 20px;
-	background: transparent;
-	color: var(--login-white-color);
-	border-color: var(--login-font-color);
-	width: 120px;
 }
 /*  注册、忘记密码按钮样式 */
 .extra-actions {
