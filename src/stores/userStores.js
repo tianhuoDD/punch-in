@@ -3,13 +3,13 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useUserStore = defineStore("user", () => {
-	const token = ref(""); // 存储 token
+	const token = ref(localStorage.getItem("token") || ""); // 存储 token
 	const userInfo = ref({}); // 存储用户信息
 
 	// 设置token
 	const setToken = (newToken) => {
 		token.value = newToken;
-		localStorage.setItem("token", newToken); // 可选：保存到 localStorage
+		localStorage.setItem("token", newToken); // 保存到 localStorage
 	};
 
 	// 清除token

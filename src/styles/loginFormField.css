@@ -1,35 +1,35 @@
 /* 登录-注册表单样式 */
-.van-cell,
-.van-cell-group {
+.login-wrapper .van-cell,
+.login-wrapper .van-cell-group {
 	background-color: transparent;
 	caret-color: green;
 }
-.van-field__body {
+.login-wrapper .van-field__body {
 	font-size: 18px;
 }
-.van-cell__value input {
+.login-wrapper .van-cell__value input {
 	color: white;
 }
-.van-cell__value input::placeholder {
+.login-wrapper .van-cell__value input::placeholder {
 	color: var(--login-font-color);
 }
-.van-cell__title {
+.login-wrapper .van-cell__title {
 	display: none;
 }
-.van-cell:after {
+.login-wrapper .van-cell:after {
 	border-bottom: 1px solid var(--login-white-color);
 	transform: none;
 }
 /* 登录-注册协议样式 */
-.van-checkbox__label {
+.login-wrapper .van-checkbox__label {
 	color: var(--login-protocol-color) !important;
 	font-size: 12px;
 }
-.van-badge__wrapper {
+.login-wrapper .van-badge__wrapper {
 	border-radius: 5px;
 }
 /* 登录-注册按钮样式 */
-.login-reg-button {
+.login-wrapper .login-reg-button {
 	font-size: 18px;
 	margin-top: 20px !important;
 	border-radius: 20px !important;

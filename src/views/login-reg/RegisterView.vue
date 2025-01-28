@@ -1,56 +1,58 @@
 <template>
-	<van-form ref="registerFormRef" style="margin-top: 20px" @submit="onRegisterSubmit" @failed="onRegisterFailed">
-		<van-cell-group inset>
-			<van-field v-model="username" name="username" label="用户名" placeholder="用户名" :rules="usernameRules" />
-			<van-field
-				v-model="password"
-				name="password"
-				type="password"
-				label="密码"
-				placeholder="密码"
-				:rules="passwordRules"
-			/>
-			<van-field
-				v-model="confirmPassword"
-				name="confirmPassword"
-				type="password"
-				label="确认密码"
-				placeholder="确认密码"
-				:rules="confirmPasswordRules"
-			/>
-			<van-field v-model="email" name="email" label="邮箱" placeholder="邮箱" :rules="emailRules" />
+	<div class="login-wrapper">
+		<van-form ref="registerFormRef" style="margin-top: 20px" @submit="onRegisterSubmit" @failed="onRegisterFailed">
+			<van-cell-group inset>
+				<van-field v-model="username" name="username" label="用户名" placeholder="用户名" :rules="usernameRules" />
+				<van-field
+					v-model="password"
+					name="password"
+					type="password"
+					label="密码"
+					placeholder="密码"
+					:rules="passwordRules"
+				/>
+				<van-field
+					v-model="confirmPassword"
+					name="confirmPassword"
+					type="password"
+					label="确认密码"
+					placeholder="确认密码"
+					:rules="confirmPasswordRules"
+				/>
+				<van-field v-model="email" name="email" label="邮箱" placeholder="邮箱" :rules="emailRules" />
 
-			<van-field
-				v-model="captcha"
-				name="captcha"
-				label="验证码"
-				placeholder="验证码"
-				:rules="captchaRules"
-				class="captcha-container"
-			>
-				<template #button>
-					<captcha-button @send-captcha="sendCaptcha" />
-				</template>
-			</van-field>
+				<van-field
+					v-model="captcha"
+					name="captcha"
+					label="验证码"
+					placeholder="验证码"
+					:rules="captchaRules"
+					class="captcha-container"
+				>
+					<template #button>
+						<captcha-button @send-captcha="sendCaptcha" />
+					</template>
+				</van-field>
 
-			<van-field name="protocol" label="复选框" :rules="protocolRules">
-				<template #input>
-					<van-checkbox v-model="isProtocolChecked" shape="square">
-						我同意 《PunchIn用户服务协议》《隐私权政策》
-					</van-checkbox>
-				</template>
-			</van-field>
-		</van-cell-group>
-		<div style="display: flex; justify-content: center; align-items: center">
-			<van-button plain type="primary" native-type="submit" class="login-reg-button">立即注册</van-button>
-		</div>
-	</van-form>
+				<van-field name="protocol" label="复选框" :rules="protocolRules">
+					<template #input>
+						<van-checkbox v-model="isProtocolChecked" shape="square">
+							我同意 《PunchIn用户服务协议》《隐私权政策》
+						</van-checkbox>
+					</template>
+				</van-field>
+			</van-cell-group>
+			<div style="display: flex; justify-content: center; align-items: center">
+				<van-button plain type="primary" native-type="submit" class="login-reg-button">立即注册</van-button>
+			</div>
+		</van-form>
+	</div>
 </template>
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { closeToast, showLoadingToast, showToast } from "vant";
-import "@/styles/FormField.css";
+import "@/styles/loginFormField.css";
 import CaptchaButton from "@/components/CaptchaButton.vue";
 import { useRulesStore } from "@/stores/rulesStores";
 import { registerApi } from "@/apis/login/index";

@@ -62,7 +62,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { closeToast, showLoadingToast, showToast } from "vant";
-import "@/styles/FormField.css";
+import "@/styles/loginFormField.css";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { loginApi } from "@/apis/login/index";
 import { useRulesStore } from "@/stores/rulesStores";
