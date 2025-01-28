@@ -3,6 +3,10 @@
 	--login-font-color: #92b0f1;
 	--login-protocol-color: #bbcff7;
 	--login-white-color: #fff;
+}
+:root {
 	--font-gray-color: #999;
 	--bg-gray-color: #f7f7f7;
+	--bg-black-color: #f2f2f7;
+	--font-blue-color: #4f77e6;
 }

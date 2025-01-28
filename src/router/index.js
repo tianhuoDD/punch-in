@@ -27,6 +27,14 @@ const router = createRouter({
 			],
 		},
 		{
+			path: "/mine/personal-info", // Mine 的个人信息页面
+			name: "personal-info",
+			meta: {
+				requiresAuth: true, // 需要登录权限
+			},
+			component: () => import("@/views/mine/PersonalInfo.vue"),
+		},
+		{
 			path: "/login-reg",
 			component: loginLayout,
 			redirect: "login",

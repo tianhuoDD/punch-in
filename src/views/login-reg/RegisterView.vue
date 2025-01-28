@@ -95,6 +95,7 @@ const onRegisterSubmit = async () => {
 			email: email.value,
 		});
 		showToast(data.message);
+		router.push({ name: "login" });
 	} catch (errMsg) {
 		showToast(errMsg);
 	}
