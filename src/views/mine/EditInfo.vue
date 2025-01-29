@@ -15,7 +15,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { showToast } from "vant";
+
 import { useUserStore } from "@/stores/userStores";
 import { postNicknameApi, postEmailApi } from "@/apis/user";
 const router = useRouter();

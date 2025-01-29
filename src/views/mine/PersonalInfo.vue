@@ -63,7 +63,6 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { showToast } from "vant";
 import { useUserStore } from "@/stores/userStores";
 import { useUtilsStore } from "@/stores/utilsStores";
 import { postAvatarApi } from "@/apis/user";
@@ -72,6 +71,7 @@ const userStore = useUserStore();
 const utilsStore = useUtilsStore();
 // 用户信息
 const userInfo = userStore.userInfo;
+const avatarUrl = utilsStore.getImageUrl(userInfo.avatar);
 const nickname = userInfo.nickname;
 const email = userInfo.email;
 const username = userInfo.username;
@@ -83,14 +83,19 @@ const onClickLeft = () => {
 const goToEdit = (field, value) => {
 	router.push({ name: "edit-info", state: { field, value } });
 };
+
 // 上传头像
-const avatarList = ref([{ url: "https://fastly.jsdelivr.net/npm/@vant/assets/leaf.jpeg" }]);
+const avatarList = ref([{ url: avatarUrl }]);
 const handleAvatarUpload = async (file) => {
 	const formData = new FormData();
 	formData.append("avatar", file.file);
 	try {
+		let updatedInfo = { ...userStore.userInfo };
 		const data = await postAvatarApi(formData);
 		showToast(data.message);
+		// 更新 Pinia 的 userInfo
+		updatedInfo.avatar = data.avatar_url;
+		userStore.setUserInfo(updatedInfo);
 	} catch (errMsg) {
 		showToast(errMsg);
 	}

@@ -61,7 +61,6 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { closeToast, showLoadingToast, showToast } from "vant";
 import "@/styles/loginFormField.css";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { postLoginApi } from "@/apis/login/index";

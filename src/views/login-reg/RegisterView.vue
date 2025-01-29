@@ -51,7 +51,6 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { closeToast, showLoadingToast, showToast } from "vant";
 import "@/styles/loginFormField.css";
 import CaptchaButton from "@/components/CaptchaButton.vue";
 import { useRulesStore } from "@/stores/rulesStores";

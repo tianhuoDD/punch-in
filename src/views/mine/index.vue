@@ -7,7 +7,7 @@
 	<van-cell is-link center to="/mine/personal-info">
 		<template #title>
 			<van-space>
-				<van-image round width="5rem" height="5rem" src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg" />
+				<van-image round width="5rem" height="5rem" :src="avatarUrl" />
 				<van-space direction="vertical" size="0">
 					<h1 class="username">{{ nickname }}</h1>
 					<span class="description">
@@ -47,7 +47,6 @@
 </template>
 <script setup>
 import { useRouter } from "vue-router";
-import { showToast, showConfirmDialog } from "vant";
 import { useUserStore } from "@/stores/userStores";
 import { useUtilsStore } from "@/stores/utilsStores";
 import SvgIcon from "@/components/SvgIcon.vue";
@@ -56,6 +55,7 @@ const userStore = useUserStore();
 const utilsStore = useUtilsStore();
 // 用户信息
 const userInfo = userStore.userInfo;
+const avatarUrl = utilsStore.getImageUrl(userInfo.avatar);
 const nickname = userInfo.nickname;
 const day = utilsStore.calculateDaysDifference(userInfo.created_at);
 const handleLogout = async () => {

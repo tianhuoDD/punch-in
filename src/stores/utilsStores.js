@@ -31,8 +31,19 @@ export const useUtilsStore = defineStore("utils", () => {
 	const formatTime = (time) => {
 		return new Date(time).toISOString().replace("T", " ").split(".")[0];
 	};
+	/**
+	 * 生成完整的图片 URL
+	 *
+	 * @param {string} path - 图片路径（相对路径）
+	 * @returns {string} 完整的图片 URL
+	 */
+	const getImageUrl = (path) => {
+		const baseUrl = import.meta.env.VITE_APP_BASE_API;
+		return `${baseUrl.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
+	};
 	return {
 		calculateDaysDifference,
 		formatTime,
+		getImageUrl,
 	};
 });

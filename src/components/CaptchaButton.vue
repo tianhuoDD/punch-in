@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="captcha-button">
 		<van-button v-if="!isSending && !isCountingDown" type="primary" size="small" @click="sendCaptcha">
 			获取验证码
 		</van-button>
@@ -56,7 +56,7 @@ const onFinish = () => {
 </script>
 
 <style scoped>
-:deep(.van-button__text) {
+.captcha-button :deep(.van-button__text) {
 	display: flex;
 	align-items: center;
 }

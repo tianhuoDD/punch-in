@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { showToast } from "vant";
 import { useUserStore } from "@/stores/userStores";
 import Layout from "@/layout/index.vue";
 import loginLayout from "@/layout/login-layout/index.vue";
