@@ -5,12 +5,12 @@
 		<!-- 可修改的内容 -->
 		<van-cell class="avatar">
 			<template #title>
-				<van-image
-					width="80"
-					height="80"
-					fit="cover"
-					position="center"
-					src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+				<van-uploader
+					v-model="avatarList"
+					:deletable="false"
+					:show-upload="false"
+					reupload
+					:after-read="handleAvatarUpload"
 				/>
 			</template>
 		</van-cell>
@@ -61,9 +61,12 @@
 	</div>
 </template>
 <script setup>
+import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { showToast } from "vant";
 import { useUserStore } from "@/stores/userStores";
 import { useUtilsStore } from "@/stores/utilsStores";
+import { postAvatarApi } from "@/apis/user";
 const router = useRouter();
 const userStore = useUserStore();
 const utilsStore = useUtilsStore();
@@ -79,6 +82,18 @@ const onClickLeft = () => {
 };
 const goToEdit = (field, value) => {
 	router.push({ name: "edit-info", state: { field, value } });
+};
+// 上传头像
+const avatarList = ref([{ url: "https://fastly.jsdelivr.net/npm/@vant/assets/leaf.jpeg" }]);
+const handleAvatarUpload = async (file) => {
+	const formData = new FormData();
+	formData.append("avatar", file.file);
+	try {
+		const data = await postAvatarApi(formData);
+		showToast(data.message);
+	} catch (errMsg) {
+		showToast(errMsg);
+	}
 };
 </script>
 <style scoped>

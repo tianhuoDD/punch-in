@@ -11,8 +11,6 @@ romAxios.addResponseInterceptor(
 	},
 	({ errMsg, response }) => {
 		const msg = response.data.message ? response.data.message : errMsg;
-		// 错误时展示提示
-		showToast(msg);
 		console.error("错误的response：", response);
 		return Promise.reject(msg);
 	},
