@@ -2,6 +2,7 @@
 	<div class="personal-container">
 		<van-nav-bar title="我的个人资料" left-text="我的" left-arrow @click-left="onClickLeft" />
 		<van-cell class="space" :border="false" />
+		<!-- 可修改的内容 -->
 		<van-cell class="avatar">
 			<template #title>
 				<van-image
@@ -14,20 +15,19 @@
 			</template>
 		</van-cell>
 		<van-cell class="space" :border="false" />
-		<!-- 可修改的内容 -->
-		<van-cell is-link>
+		<van-cell is-link @click="goToEdit('nickname', nickname)">
 			<template #title>
 				<van-space size="20px">
 					<span class="cell-title">昵称</span>
-					<span class="cell-content">Romcere</span>
+					<span class="cell-content">{{ nickname }}</span>
 				</van-space>
 			</template>
 		</van-cell>
-		<van-cell is-link>
+		<van-cell is-link @click="goToEdit('email', email)">
 			<template #title>
 				<van-space size="20px">
 					<span class="cell-title">邮箱</span>
-					<span class="cell-content">2434260208@qq.com</span>
+					<span class="cell-content">{{ email }}</span>
 				</van-space>
 			</template>
 		</van-cell>
@@ -37,15 +37,7 @@
 			<template #title>
 				<van-space size="20px">
 					<span class="cell-title">用户名</span>
-					<span class="cell-content">2</span>
-				</van-space>
-			</template>
-		</van-cell>
-		<van-cell>
-			<template #title>
-				<van-space size="20px">
-					<span class="cell-title">创建时间</span>
-					<span class="cell-content">2</span>
+					<span class="cell-content">{{ username }}</span>
 				</van-space>
 			</template>
 		</van-cell>
@@ -53,7 +45,15 @@
 			<template #title>
 				<van-space size="20px">
 					<span class="cell-title">PunchIn ID</span>
-					<span class="cell-content">2</span>
+					<span class="cell-content">{{ id }}</span>
+				</van-space>
+			</template>
+		</van-cell>
+		<van-cell>
+			<template #title>
+				<van-space size="20px">
+					<span class="cell-title">创建时间</span>
+					<span class="cell-content">{{ createdAt }}</span>
 				</van-space>
 			</template>
 		</van-cell>
@@ -62,9 +62,23 @@
 </template>
 <script setup>
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/userStores";
+import { useUtilsStore } from "@/stores/utilsStores";
 const router = useRouter();
+const userStore = useUserStore();
+const utilsStore = useUtilsStore();
+// 用户信息
+const userInfo = userStore.userInfo;
+const nickname = userInfo.nickname;
+const email = userInfo.email;
+const username = userInfo.username;
+const createdAt = utilsStore.formatTime(userInfo.created_at);
+const id = userInfo.id;
 const onClickLeft = () => {
 	router.back();
+};
+const goToEdit = (field, value) => {
+	router.push({ name: "edit-info", state: { field, value } });
 };
 </script>
 <style scoped>

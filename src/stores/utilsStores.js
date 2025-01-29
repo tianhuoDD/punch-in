@@ -22,8 +22,17 @@ export const useUtilsStore = defineStore("utils", () => {
 
 		return daysDifference;
 	};
-
+	/**
+	 * 格式化时间为 "YYYY-MM-DD HH:mm:ss" 格式
+	 *
+	 * @param {string|number|Date} time - 需要格式化的时间，可以是时间字符串、时间戳或 Date 对象
+	 * @returns {string} 格式化后的时间字符串，例如 "2025-01-20 08:17:53"
+	 */
+	const formatTime = (time) => {
+		return new Date(time).toISOString().replace("T", " ").split(".")[0];
+	};
 	return {
 		calculateDaysDifference,
+		formatTime,
 	};
 });

@@ -55,7 +55,7 @@ import { closeToast, showLoadingToast, showToast } from "vant";
 import "@/styles/loginFormField.css";
 import CaptchaButton from "@/components/CaptchaButton.vue";
 import { useRulesStore } from "@/stores/rulesStores";
-import { registerApi } from "@/apis/login/index";
+import { postRegisterApi } from "@/apis/login/index";
 const router = useRouter();
 const rulesStore = useRulesStore();
 const registerFormRef = ref();
@@ -89,7 +89,7 @@ const sendCaptcha = async (callback) => {
 // 注册成功
 const onRegisterSubmit = async () => {
 	try {
-		const data = await registerApi({
+		const data = await postRegisterApi({
 			username: username.value,
 			password: password.value,
 			email: email.value,

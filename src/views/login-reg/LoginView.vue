@@ -64,7 +64,7 @@ import { useRouter } from "vue-router";
 import { closeToast, showLoadingToast, showToast } from "vant";
 import "@/styles/loginFormField.css";
 import SvgIcon from "@/components/SvgIcon.vue";
-import { loginApi } from "@/apis/login/index";
+import { postLoginApi } from "@/apis/login/index";
 import { useRulesStore } from "@/stores/rulesStores";
 import { useUserStore } from "@/stores/userStores";
 const router = useRouter();
@@ -83,7 +83,7 @@ const protocolRules = [{ validator: rulesStore.protocolValidate, trigger: "onSub
 const onLoginSubmit = async () => {
 	showLoadingToast("登录中...");
 	try {
-		const data = await loginApi({
+		const data = await postLoginApi({
 			username: username.value,
 			password: password.value,
 		});
