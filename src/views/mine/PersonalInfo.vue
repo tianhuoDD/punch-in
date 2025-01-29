@@ -5,15 +5,29 @@
 		<!-- 可修改的内容 -->
 		<van-cell class="avatar">
 			<template #title>
-				<van-uploader
-					v-model="avatarList"
-					:deletable="false"
-					:show-upload="false"
-					reupload
-					:after-read="handleAvatarUpload"
-				/>
+				<div class="uploader-wrapper">
+					<van-uploader
+						v-model="avatarList"
+						:deletable="false"
+						:show-upload="false"
+						reupload
+						:after-read="handleAvatarUpload"
+					>
+						<template #preview-cover>
+							<svg-icon
+								name="camera"
+								width="20px"
+								height="20px"
+								color="var(--font-blue-color)"
+								padding="5px"
+								class="icon-style"
+							/>
+						</template>
+					</van-uploader>
+				</div>
 			</template>
 		</van-cell>
+
 		<van-cell class="space" :border="false" />
 		<van-cell is-link @click="goToEdit('nickname', nickname)">
 			<template #title>
@@ -63,6 +77,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import SvgIcon from "@/components/SvgIcon.vue";
 import { useUserStore } from "@/stores/userStores";
 import { useUtilsStore } from "@/stores/utilsStores";
 import { postAvatarApi } from "@/apis/user";
@@ -102,11 +117,6 @@ const handleAvatarUpload = async (file) => {
 };
 </script>
 <style scoped>
-.personal-container {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-}
 .avatar {
 	padding: 20px 0;
 	background-color: var(--bg-gray-color);
@@ -116,17 +126,37 @@ const handleAvatarUpload = async (file) => {
 	justify-content: center;
 	align-items: center;
 }
-.fill-space {
-	flex-grow: 1;
+.uploader-wrapper {
+	width: 80px;
+	height: 80px;
+	position: relative; /* 让 van-uploader 作为相对定位的容器 */
+	display: inline-block; /* 适应内容大小 */
 }
-.space {
-	background-color: var(--bg-black-color);
+.icon-style {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	background-color: white; /* 背景色设置为白色 */
+	border-radius: 50%; /* 可选，使其更圆滑 */
 }
+/* 单元格样式 */
 .cell-title {
 	color: var(--font-gray-color);
 	font-size: 16px;
 }
 .cell-content {
 	font-size: 16px;
+}
+/* 填充剩余空间样式 */
+.personal-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+.fill-space {
+	flex-grow: 1;
+}
+.space {
+	background-color: var(--bg-black-color);
 }
 </style>
