@@ -59,6 +59,12 @@ const router = createRouter({
 				},
 			],
 		},
+		// 捕获所有未匹配的路径，跳转到 404 页面
+		{
+			path: "/:pathMatch(.*)*",
+			name: "NotFound",
+			component: () => import("@/views/NotFound.vue"),
+		},
 	],
 });
 // 全局路由守卫
