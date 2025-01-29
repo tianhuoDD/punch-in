@@ -66,11 +66,13 @@ const handleLogout = async () => {
 		showConfirmDialog({
 			title: "退出登录",
 			message: "您真的要退出登录吗？",
-		}).then(() => {
-			userStore.clearToken();
-			showToast("退出登录成功！");
-			router.push({ name: "login" });
-		});
+		})
+			.then(() => {
+				userStore.clearToken();
+				showToast("退出登录成功！");
+				router.push({ name: "login" });
+			})
+			.catch(() => {});
 	} else {
 		showToast("您还未登录,请登录...");
 		router.push({ name: "login" });
