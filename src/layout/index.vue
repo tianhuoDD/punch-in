@@ -14,7 +14,7 @@
 			报表
 		</van-tabbar-item>
 		<!-- 添加图标 -->
-		<van-tabbar-item name="add" to="/index">
+		<van-tabbar-item name="add" :to="dynamicRoute">
 			<svg-icon name="add" width="50px" height="50px" padding="0" class="add-icon" @click="handleAddClick" />
 		</van-tabbar-item>
 
@@ -33,11 +33,17 @@
 	</van-tabbar>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { BankCard, Analysis, User, Comment } from "@icon-park/vue-next";
+import { useUserStore } from "@/stores/userStores";
 const active = ref("add");
+const userStore = useUserStore();
 
+// 计算属性，决定跳转路径
+const dynamicRoute = computed(() => {
+	return userStore.getToken() ? "/book-keeping" : "/index";
+});
 const handleAddClick = () => {};
 </script>
 <style scoped>

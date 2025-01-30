@@ -16,6 +16,14 @@ const router = createRouter({
 					component: () => import("@/views/index.vue"),
 				},
 				{
+					path: "book-keeping",
+					name: "book-keeping",
+					meta: {
+						requiresAuth: true,
+					},
+					component: () => import("@/views/book-keeping/index.vue"),
+				},
+				{
 					path: "mine",
 					name: "mine",
 					meta: {

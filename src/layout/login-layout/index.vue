@@ -1,17 +1,18 @@
 <template>
 	<div class="login-layout-container">
 		<div style="padding-top: 20px">
-			<svg-icon name="left-arrow" @click="handleBackClick" />
+			<svg-icon name="left_arrow" @click="handleBackClick" />
 		</div>
 		<router-view />
 	</div>
 </template>
 <script setup>
 import { useRouter } from "vue-router";
+import SvgIcon from "@/components/SvgIcon.vue";
 const router = useRouter();
 // 返回按钮点击事件
 const handleBackClick = () => {
-	router.back();
+	router.push({ name: "index" });
 };
 </script>
 <style scoped>

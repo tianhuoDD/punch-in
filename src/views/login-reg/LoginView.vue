@@ -7,7 +7,7 @@
 		<!-- 其他登录方式 -->
 		<van-row>
 			<van-col :span="12" class="login-options" style="border-right: 1px solid var(--login-font-color)">
-				<svg-icon name="wechat-fill" />
+				<svg-icon name="wechat_fill" />
 				<span>微信登录</span>
 			</van-col>
 			<van-col :span="12" class="login-options">
@@ -90,7 +90,7 @@ const onLoginSubmit = async () => {
 			userStore.setToken(data.token); // 存储 token
 			userStore.setUserInfo(data.user_info); // 存储 userInfo
 			showToast(data.message);
-			router.push({ name: "index" });
+			router.push({ name: "book-keeping" });
 		} else {
 			showToast("没有获取到Token,登录失败...");
 		}

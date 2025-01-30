@@ -8,7 +8,15 @@
 		<van-cell is-link center to="/mine/personal-info">
 			<template #title>
 				<van-space>
-					<van-image round width="5rem" height="5rem" :src="avatarUrl" @click.stop="handleImageClick" />
+					<van-image
+						round
+						width="5rem"
+						height="5rem"
+						:src="avatarUrl"
+						@click.stop="handleImageClick"
+						@error="handleImageError"
+					/>
+
 					<van-space direction="vertical" size="0">
 						<h1 class="username">{{ nickname }}</h1>
 						<span class="description">
@@ -49,16 +57,18 @@
 	</div>
 </template>
 <script setup>
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStores";
 import { useUtilsStore } from "@/stores/utilsStores";
 import SvgIcon from "@/components/SvgIcon.vue";
+import default_avatar from "@/assets/images/default_avatar.png";
 const router = useRouter();
 const userStore = useUserStore();
 const utilsStore = useUtilsStore();
 // 用户信息
 const userInfo = userStore.userInfo;
-const avatarUrl = utilsStore.getImageUrl(userInfo.avatar);
+const avatarUrl = ref(utilsStore.getImageUrl(userInfo.avatar));
 const nickname = userInfo.nickname;
 const day = utilsStore.calculateDaysDifference(userInfo.created_at);
 const handleLogout = async () => {
@@ -79,9 +89,13 @@ const handleLogout = async () => {
 	}
 };
 // 图片预览
+// 当图片加载失败时，使用默认头像
+const handleImageError = () => {
+	avatarUrl.value = default_avatar;
+};
 const handleImageClick = () => {
 	showImagePreview({
-		images: [avatarUrl],
+		images: [avatarUrl.value],
 		startPosition: 0,
 		showIndex: false,
 	});
