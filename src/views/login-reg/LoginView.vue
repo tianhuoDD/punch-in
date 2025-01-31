@@ -90,7 +90,7 @@ const onLoginSubmit = async () => {
 			userStore.setToken(data.token); // 存储 token
 			userStore.setUserInfo(data.user_info); // 存储 userInfo
 			showToast(data.message);
-			router.push({ name: "book-keeping" });
+			router.push({ name: "index" });
 		} else {
 			showToast("没有获取到Token,登录失败...");
 		}

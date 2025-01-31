@@ -13,7 +13,15 @@ const router = createRouter({
 				{
 					path: "index",
 					name: "index",
-					component: () => import("@/views/index.vue"),
+					component: () => import("@/views/index.vue"), // 默认未登录时加载 index.vue
+					beforeEnter: (to, from, next) => {
+						const userStore = useUserStore();
+						if (userStore.getToken()) {
+							next({ path: "/book-keeping" }); // 如果已登录，重定向到 book-keeping
+						} else {
+							next();
+						}
+					},
 				},
 				{
 					path: "book-keeping",
