@@ -68,7 +68,8 @@ const userStore = useUserStore();
 const utilsStore = useUtilsStore();
 // 用户信息
 const userInfo = userStore.userInfo;
-const avatarUrl = ref(utilsStore.getImageUrl(userInfo.avatar));
+// 计算 avatarUrl，确保不会传入 null 或 undefined
+const avatarUrl = ref(userInfo.avatar ? utilsStore.getImageUrl(userInfo.avatar) : default_avatar);
 const nickname = userInfo.nickname;
 const day = utilsStore.calculateDaysDifference(userInfo.created_at);
 const handleLogout = async () => {
@@ -98,6 +99,7 @@ const handleImageClick = () => {
 		images: [avatarUrl.value],
 		startPosition: 0,
 		showIndex: false,
+		closeable: true,
 	});
 };
 </script>

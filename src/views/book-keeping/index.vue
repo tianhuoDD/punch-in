@@ -12,7 +12,7 @@
 			</van-step>
 			<van-step>
 				<template #inactive-icon>
-					<svg-icon name="smile" padding="0" width="30px" height="30px" />
+					<svg-icon name="smile" padding="0" width="30px" height="30px" color="var(--font-black-color)" />
 				</template>
 			</van-step>
 		</van-steps>
@@ -32,6 +32,15 @@ import SvgIcon from "@/components/SvgIcon.vue";
 }
 .book-keeping :deep(.van-hairline) {
 	padding-left: 10px;
+}
+/* 步骤条统一样式 */
+.book-keeping .van-hairline {
+	padding-bottom: 50px; /* 线条长度 */
+	margin-bottom: 25px;
+}
+.book-keeping :deep(.van-step__line) {
+	background-color: var(--line-gray-color);
+	top: auto;
 }
 /* 当日记账提示样式 */
 .step-date {
@@ -56,5 +65,8 @@ import SvgIcon from "@/components/SvgIcon.vue";
 /* 每个 step右侧描述 的样式 */
 .book-keeping :deep(.van-step--vertical:not(:last-child):after) {
 	border: 0;
+}
+.book-keeping .title {
+	font-size: 16px;
 }
 </style>

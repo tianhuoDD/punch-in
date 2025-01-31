@@ -81,12 +81,13 @@ import SvgIcon from "@/components/SvgIcon.vue";
 import { useUserStore } from "@/stores/userStores";
 import { useUtilsStore } from "@/stores/utilsStores";
 import { postAvatarApi } from "@/apis/user";
+import default_avatar from "@/assets/images/default_avatar.png";
 const router = useRouter();
 const userStore = useUserStore();
 const utilsStore = useUtilsStore();
 // 用户信息
 const userInfo = userStore.userInfo;
-const avatarUrl = utilsStore.getImageUrl(userInfo.avatar);
+const avatarUrl = ref(userInfo.avatar ? utilsStore.getImageUrl(userInfo.avatar) : default_avatar);
 const nickname = userInfo.nickname;
 const email = userInfo.email;
 const username = userInfo.username;
