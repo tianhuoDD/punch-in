@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/stores/userStores";
 import Layout from "@/layout/index.vue";
 import loginLayout from "@/layout/login-layout/index.vue";
+import { showToast } from "vant";
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL), // 创建历史记录，用于路由导航
 	routes: [
@@ -17,19 +18,19 @@ const router = createRouter({
 					beforeEnter: (to, from, next) => {
 						const userStore = useUserStore();
 						if (userStore.getToken()) {
-							next({ path: "/book-keeping" }); // 如果已登录，重定向到 book-keeping
+							next({ name: "bill" }); // 如果已登录，重定向到 bill
 						} else {
 							next();
 						}
 					},
 				},
 				{
-					path: "book-keeping",
-					name: "book-keeping",
+					path: "bill",
+					name: "bill",
 					meta: {
 						requiresAuth: true,
 					},
-					component: () => import("@/views/book-keeping/index.vue"),
+					component: () => import("@/views/bill/index.vue"),
 				},
 				{
 					path: "mine",
@@ -40,6 +41,14 @@ const router = createRouter({
 					component: () => import("@/views/mine/index.vue"),
 				},
 			],
+		},
+		{
+			path: "/bill/add-bill", // Mine 的个人信息页面
+			name: "add-bill",
+			meta: {
+				requiresAuth: true, // 需要登录权限
+			},
+			component: () => import("@/views/bill/AddBill.vue"),
 		},
 		{
 			path: "/mine/personal-info", // Mine 的个人信息页面
