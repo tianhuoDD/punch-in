@@ -24,7 +24,10 @@ export default defineConfig({
 		// 配置svg图标插件
 		createSvgIconsPlugin({
 			// 指定需要缓存的svg图标文件目录
-			iconDirs: [path.resolve(process.cwd(), "src/assets/icons")], // 指定symbolId格式
+			iconDirs: [
+				path.resolve(process.cwd(), "src/assets/icons/bill-icons"),
+				path.resolve(process.cwd(), "src/assets/icons"),
+			],
 			symbolId: "icon-[name]",
 			// 设置为true时，可以自定义插入的位置
 			inject: "body-first",
