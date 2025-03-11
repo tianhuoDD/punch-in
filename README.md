@@ -240,4 +240,4 @@ import { BankCard } from "@icon-park/vue-next";
 ## 项目存在的问题
 
 1. 优化svg图标引入，更换其他依赖；以减少build时间、fill颜色替换问题等。
-2. punch-in/src/components/InputBill.vue 及 punch-in/src/views/bill/AddBill.vue 输入金额的优化
+2. punch-in/src/components/bill/InputBill.vue 及 punch-in/src/views/bill/AddBill.vue 输入金额的优化

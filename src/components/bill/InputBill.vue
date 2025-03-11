@@ -1,4 +1,5 @@
 <template>
+	<van-divider class="input-divider" style="margin-top: 10px" />
 	<van-field
 		v-model="formattedValue"
 		type="number"
@@ -8,16 +9,16 @@
 		size="large"
 	>
 		<template #label>
-			<svg-icon :name="svgName" padding="0" />
+			<svg-icon :name="svgName" padding="0px" width="40px" height="40px" />
 			<span class="title">{{ category }}</span>
 		</template>
 	</van-field>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useVModel } from "@vueuse/core";
-import SvgIcon from "./SvgIcon.vue";
+import SvgIcon from "../SvgIcon.vue";
 
 // 定义 props
 const props = defineProps({
@@ -116,9 +117,17 @@ const formatValue = (value) => {
 	align-items: center;
 }
 .title {
+	margin-left: 10px;
 	font-size: 20px;
 }
 .input-bill :deep(.van-field__body) {
 	font-size: 28px;
+}
+.input-bill :deep(.van-field) {
+	padding: 0px;
+}
+.input-divider {
+	margin: 0px;
+	width: 344px;
 }
 </style>

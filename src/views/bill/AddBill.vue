@@ -2,16 +2,31 @@
 	<van-tabs v-model:active="active" class="add-bill" type="card" animated swipeable>
 		<van-tab name="income" title="收入">收入</van-tab>
 		<van-tab name="expense" title="支出">
-			<input-bill v-model="amountValue" :svg-name="'ice'" :category="'餐饮'" :account="'支付宝'" />
+			<input-bill v-model="amountValue" :svg-name="'icon_bonus'" :category="'餐饮'" :account="'支付宝'" />
+			<svg-bill class="svg-bill" />
 		</van-tab>
 		<van-tab name="transfer" title="转账">转账</van-tab>
 	</van-tabs>
-	<!-- 日期按钮 -->
-	<van-button class="date-button" @click="showCalendar = !showCalendar">选择日期</van-button>
-
+	<div class="button-container">
+		<!-- 日期按钮 -->
+		<custom-button class="date-button" @click="showCalendar = !showCalendar">{{
+			formattedDate ? formattedDate : "选择日期"
+		}}</custom-button>
+		<!-- 账户按钮 -->
+		<custom-button class="account-button" @click="showCalendar = !showCalendar">现金</custom-button>
+		<!-- 备注按钮 -->
+		<custom-button class="remark-button" @click="showCalendar = !showCalendar">备注</custom-button>
+	</div>
 	<!-- 日历组件 -->
-	<van-calendar v-if="showCalendar" v-model:show="showCalendar" @confirm="onDateConfirm" />
-
+	<van-calendar
+		v-if="showCalendar"
+		v-model:show="showCalendar"
+		title="记账日期选择"
+		:min-date="new Date(2025, 1, 1)"
+		:show-confirm="false"
+		@select="getSelectedDate"
+	/>
+	<!-- 数字键盘 -->
 	<van-number-keyboard
 		v-model="amountValue"
 		:show="true"
@@ -22,33 +37,51 @@
 	/>
 </template>
 <script setup>
-import { ref, watch } from "vue";
-import InputBill from "@/components/InputBill.vue";
+import { ref } from "vue";
+import CustomButton from "@/components/bill/CustomButton.vue";
+import InputBill from "@/components/bill/InputBill.vue";
+import SvgBill from "@/components/bill/SvgBill.vue";
+import { useUtilsStore } from "@/stores/utilsStores";
 import { postTransactionApi } from "@/apis/transaction/index";
-const amountValue = ref("");
-const active = ref("expense");
+const utilsStore = useUtilsStore();
 
 // 控制 Calendar 组件显示
 const showCalendar = ref(false);
+const active = ref("expense");
 
-// 处理日期选择
-const onDateConfirm = (date) => {
-	console.log("选择的日期:", date);
-	showCalendar.value = false; // 关闭日期选择器
-};
+// 初始化账单变量
+const amountValue = ref(""); // 金额
+const formattedDate = ref(utilsStore.formatDateToMMDD(new Date())); // 格式化后的日期
+const dateValue = ref(utilsStore.formatDateToYYYYMMDD(new Date())); // 传给后端的日期
 
 // 添加交易
 const createTransaction = async () => {
-	// const amount = ref(formatAmount(amountValue.value));
 	amountValue.value = formatAmount(amountValue.value);
-	console.log("金额：", amountValue.value);
-
-	// try {
-	// 	await postTransactionApi(data);
-	// } catch (error) {
-	// 	console.error("添加交易失败:", error);
-	// }
+	const data = {
+		income: amountValue.value,
+		svg: "ice",
+		category: "餐饮",
+		account: "支付宝",
+		date: dateValue.value,
+		remark: "备注",
+	};
+	try {
+		await postTransactionApi(data);
+	} catch (error) {
+		console.error("添加交易失败:", error);
+	}
 };
+
+// 处理日期选择
+const getSelectedDate = (date) => {
+	// 确保日期格式为 YYYY-MM-DD
+	formattedDate.value = utilsStore.formatDateToMMDD(date);
+	dateValue.value = utilsStore.formatDateToYYYYMMDD(date);
+	setTimeout(() => {
+		showCalendar.value = false; // 关闭日期选择器
+	}, 100);
+};
+// 格式化金额，确保小数点后最多两位，并确保小数点前至少有一个数字
 const formatAmount = (value) => {
 	if (value === "" || value === null || value === undefined) {
 		return "0.00"; // 如果值为空，返回 "0.00"
@@ -89,13 +122,11 @@ const formatAmount = (value) => {
 <style scoped>
 /* 顶部tabs选项卡样式 */
 .add-bill {
-	height: 100%;
+	width: 100%;
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
-.add-bill :deep(.van-tabs__content) {
-	height: 100%;
-}
+
 .add-bill :deep(.van-tabs__wrap) {
 	padding-left: 50px;
 	padding-right: 50px;
@@ -103,9 +134,38 @@ const formatAmount = (value) => {
 .add-bill :deep(.van-tabs__nav--card) {
 	border-radius: 5px;
 }
+
+/* 按钮容器样式 */
+.button-container {
+	position: fixed;
+	bottom: 245px;
+	width: 100%;
+	height: 35px;
+	border-top: 1px solid #e5e5e5;
+	background: rgba(255, 255, 255, 0.8); /* 透明白色背景 */
+}
+
 /* 日期按钮样式 */
 .date-button {
 	position: fixed;
 	bottom: 250px;
+	left: 5px;
+}
+/* 账号按钮样式 */
+.account-button {
+	position: fixed;
+	bottom: 250px;
+	left: 95px;
+}
+/* 备注按钮样式 */
+.remark-button {
+	position: fixed;
+	bottom: 250px;
+	right: 5px;
+}
+/* 图标组件样式 */
+.svg-bill {
+	overflow-y: auto; /* 溢出时可滑动 */
+	height: 430px;
 }
 </style>

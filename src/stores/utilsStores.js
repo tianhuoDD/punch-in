@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
 // 切换侧边栏状态
 export const useUtilsStore = defineStore("utils", () => {
 	/**
@@ -32,6 +31,40 @@ export const useUtilsStore = defineStore("utils", () => {
 		return new Date(time).toISOString().replace("T", " ").split(".")[0];
 	};
 	/**
+	 * 格式化日期为 YYYY-MM-DD 格式
+	 * @param {Date} date - 需要格式化的日期对象
+	 * @returns {string} 返回格式化后的字符串，格式为 YYYY-MM-DD
+	 */
+	const formatDateToYYYYMMDD = (date) => {
+		// 参数必须是 Date 对象
+		if (!(date instanceof Date)) {
+			return "2000-01-01";
+		}
+
+		const year = date.getFullYear(); // 获取四位年份
+		const month = String(date.getMonth() + 1).padStart(2, "0"); // 月份补零
+		const day = String(date.getDate()).padStart(2, "0"); // 日期补零
+
+		return `${year}-${month}-${day}`; // 返回 YYYY-MM-DD 格式的字符串
+	};
+	/**
+	 * 格式化日期为 MM月DD日 格式
+	 * @param {Date} date - 需要格式化的日期对象
+	 * @returns {string} 返回格式化后的字符串，格式为 MM月DD日
+	 */
+	const formatDateToMMDD = (date) => {
+		// 参数必须是 Date 对象
+		if (!(date instanceof Date)) {
+			return "01月01日";
+		}
+
+		const month = String(date.getMonth() + 1).padStart(2, "0"); // 补零
+		const day = String(date.getDate()).padStart(2, "0"); // 补零
+
+		return `${month}月${day}日`;
+	};
+
+	/**
 	 * 生成完整的图片 URL
 	 *
 	 * @param {string} path - 图片路径（相对路径）
@@ -45,5 +78,7 @@ export const useUtilsStore = defineStore("utils", () => {
 		calculateDaysDifference,
 		formatTime,
 		getImageUrl,
+		formatDateToYYYYMMDD,
+		formatDateToMMDD,
 	};
 });

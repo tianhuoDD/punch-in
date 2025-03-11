@@ -20,14 +20,15 @@
 					<p class="title">0.0</p>
 				</div>
 			</van-step>
-			<!-- 循环打印记录项 -->
-			<van-step class="step-date">
+			<!-- 循环打印交易记录 -->
+			<van-step v-for="(transaction, index) in transactions" :key="index" class="step-date">
 				<template #inactive-icon>
 					<i class="date-bg"></i>
-					<span class="date-text">今日</span>
+					<span class="date-text">{{ formatDate(transaction.date) }}</span>
 				</template>
-				<span class="title">支出 9.0</span>
+				<span class="title">{{ transaction.type === "expense" ? "支出" : "收入" }} {{ transaction.income }}</span>
 			</van-step>
+
 			<!-- 最底部提示 -->
 			<van-step>
 				<template #inactive-icon>
@@ -38,7 +39,42 @@
 	</div>
 </template>
 <script setup>
+import { ref, onMounted } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
+import { getTransactionsApi } from "@/apis/transaction/index.js";
+
+const transactions = ref([]);
+const totalIncome = ref(0);
+const totalExpense = ref(0);
+
+// 格式化日期
+const formatDate = (dateString) => {
+	const date = new Date(dateString);
+	return `${date.getMonth() + 1}月${date.getDate()}日`;
+};
+
+// 获取交易数据
+const fetchTransactions = async () => {
+	try {
+		const data = await getTransactionsApi();
+		transactions.value = data || [];
+
+		// 计算总收入和总支出
+		totalIncome.value = transactions.value
+			.filter((t) => t.type === "income")
+			.reduce((sum, t) => sum + Number(t.amount), 0);
+
+		totalExpense.value = transactions.value
+			.filter((t) => t.type === "expense")
+			.reduce((sum, t) => sum + Number(t.amount), 0);
+	} catch (error) {
+		console.error("获取交易数据失败:", error);
+	}
+};
+
+onMounted(() => {
+	fetchTransactions();
+});
 </script>
 <style scoped>
 .title {
