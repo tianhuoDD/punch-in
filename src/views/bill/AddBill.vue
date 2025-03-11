@@ -6,6 +6,9 @@
 			<svg-bill class="svg-bill" />
 		</van-tab>
 		<van-tab name="transfer" title="转账">转账</van-tab>
+		<template #nav-bottom>
+			<svg-icon name="cross" size="20px" class="close-icon" @click="handleClose" />
+		</template>
 	</van-tabs>
 	<div class="button-container">
 		<!-- 日期按钮 -->
@@ -38,13 +41,15 @@
 </template>
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import CustomButton from "@/components/bill/CustomButton.vue";
 import InputBill from "@/components/bill/InputBill.vue";
 import SvgBill from "@/components/bill/SvgBill.vue";
+import SvgIcon from "@/components/SvgIcon.vue";
 import { useUtilsStore } from "@/stores/utilsStores";
 import { postTransactionApi } from "@/apis/transaction/index";
 const utilsStore = useUtilsStore();
-
+const router = useRouter();
 // 控制 Calendar 组件显示
 const showCalendar = ref(false);
 const active = ref("expense");
@@ -71,7 +76,10 @@ const createTransaction = async () => {
 		console.error("添加交易失败:", error);
 	}
 };
-
+// 关闭按钮
+const handleClose = () => {
+	router.back();
+};
 // 处理日期选择
 const getSelectedDate = (date) => {
 	// 确保日期格式为 YYYY-MM-DD
@@ -134,7 +142,12 @@ const formatAmount = (value) => {
 .add-bill :deep(.van-tabs__nav--card) {
 	border-radius: 5px;
 }
-
+/* 关闭按钮 */
+.close-icon {
+	position: fixed;
+	top: 5px;
+	right: 10px;
+}
 /* 按钮容器样式 */
 .button-container {
 	position: fixed;
