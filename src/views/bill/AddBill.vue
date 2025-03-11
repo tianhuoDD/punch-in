@@ -166,6 +166,6 @@ const formatAmount = (value) => {
 /* 图标组件样式 */
 .svg-bill {
 	overflow-y: auto; /* 溢出时可滑动 */
-	height: 430px;
+	height: 390px;
 }
 </style>

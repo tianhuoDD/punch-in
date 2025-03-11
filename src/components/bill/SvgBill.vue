@@ -41,6 +41,6 @@ const copyIconName = (iconName) => {
 	color: #666;
 }
 .van-grid :deep(.van-grid-item__content--center) {
-	padding: 0;
+	padding: 10px 0px;
 }
 </style>
