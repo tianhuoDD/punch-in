@@ -2,8 +2,8 @@
 	<van-tabs v-model:active="active" class="add-bill" type="card" animated swipeable>
 		<van-tab name="income" title="收入">收入</van-tab>
 		<van-tab name="expense" title="支出">
-			<input-bill v-model="amountValue" :svg-name="'icon_bonus'" :category="'餐饮'" :account="'支付宝'" />
-			<svg-bill class="svg-bill" />
+			<input-bill v-model="amountValue" :svg-name="iconName" :category="'餐饮'" :account="'支付宝'" />
+			<svg-bill class="svg-bill" @icon-click="handleIconClick" />
 		</van-tab>
 		<van-tab name="transfer" title="转账">转账</van-tab>
 		<template #nav-bottom>
@@ -53,12 +53,16 @@ const router = useRouter();
 // 控制 Calendar 组件显示
 const showCalendar = ref(false);
 const active = ref("expense");
-
+const iconName = ref("icon_bonus");
 // 初始化账单变量
 const amountValue = ref(""); // 金额
 const formattedDate = ref(utilsStore.formatDateToMMDD(new Date())); // 格式化后的日期
 const dateValue = ref(utilsStore.formatDateToYYYYMMDD(new Date())); // 传给后端的日期
 
+// 图标点击事件
+const handleIconClick = (icon) => {
+	iconName.value = icon;
+};
 // 添加交易
 const createTransaction = async () => {
 	amountValue.value = formatAmount(amountValue.value);
@@ -72,6 +76,8 @@ const createTransaction = async () => {
 	};
 	try {
 		await postTransactionApi(data);
+		showToast("添加成功");
+		router.back();
 	} catch (error) {
 		console.error("添加交易失败:", error);
 	}

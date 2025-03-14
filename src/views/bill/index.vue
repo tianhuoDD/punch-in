@@ -26,7 +26,10 @@
 					<i class="date-bg"></i>
 					<span class="date-text">{{ formatDate(transaction.date) }}</span>
 				</template>
-				<span class="title">{{ transaction.type === "expense" ? "支出" : "收入" }} {{ transaction.income }}</span>
+				<span class="title"
+					>{{ transaction.type === "expense" ? "支出" : "收入" }}
+					{{ transaction.income ? transaction.income : "0.00" }}</span
+				>
 			</van-step>
 
 			<!-- 最底部提示 -->
