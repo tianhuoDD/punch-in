@@ -1,6 +1,6 @@
 // src/utils/request.js
 import romAxios from "@rom/axios";
-
+import router from "@/router";
 romAxios.initAxios({
 	baseURL: import.meta.env.VITE_APP_BASE_API, // 基础路径，可在 .env 文件中配置
 	timeout: 20000, // 请求超时时间
@@ -12,12 +12,16 @@ romAxios.addResponseInterceptor(
 	({ errMsg, response }) => {
 		const msg = response.data.message ? response.data.message : errMsg;
 		console.error("错误的response：", response);
+		if (!response.data.token) {
+			showToast(msg);
+			router.push({ name: "login" });
+		}
 		return Promise.reject(msg);
 	},
 );
 export default romAxios;
 
-/* 
+/*
 2xx 成功：
 
     200 OK：请求成功，适用于 GET、PUT、PATCH、DELETE。
