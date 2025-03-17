@@ -94,7 +94,7 @@ const username = userInfo.username;
 const createdAt = utilsStore.formatTime(userInfo.created_at);
 const id = userInfo.id;
 const onClickLeft = () => {
-	router.back();
+	history.back();
 };
 const goToEdit = (field, value) => {
 	router.push({ name: "edit-info", state: { field, value } });

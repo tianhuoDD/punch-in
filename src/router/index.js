@@ -51,6 +51,22 @@ const router = createRouter({
 			component: () => import("@/views/bill/AddBill.vue"),
 		},
 		{
+			path: "/bill/edit-svg", // Mine 的个人信息页面
+			name: "edit-svg",
+			meta: {
+				requiresAuth: true, // 需要登录权限
+			},
+			component: () => import("@/views/bill/EditSvg.vue"),
+		},
+		{
+			path: "/bill/add-svg", // Mine 的个人信息页面
+			name: "add-svg",
+			meta: {
+				requiresAuth: true, // 需要登录权限
+			},
+			component: () => import("@/views/bill/AddSvg.vue"),
+		},
+		{
 			path: "/mine/personal-info", // Mine 的个人信息页面
 			name: "personal-info",
 			meta: {

@@ -42,7 +42,7 @@ const pageTitle = computed(() => `修改${fieldLabel.value}`);
 
 // 取消修改，返回上一页
 const onClickLeft = () => {
-	router.back();
+	history.back();
 };
 
 // 确定修改
@@ -68,6 +68,6 @@ const onClickRight = async () => {
 	} catch (errMsg) {
 		showToast(errMsg);
 	}
-	router.back();
+	history.back();
 };
 </script>

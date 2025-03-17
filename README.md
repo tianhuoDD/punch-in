@@ -8,7 +8,7 @@ vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem + svg-sprite-loader
 
 ## 项目使用辅助
 
-1. 回退路由：`router.back()`
+1. 回退路由：`router.back()` 或 `history.back()`
 
 ## 项目依赖
 

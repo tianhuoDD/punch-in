@@ -2,12 +2,12 @@
 	<van-tabs v-model:active="active" class="add-bill" type="card" animated swipeable>
 		<van-tab name="income" title="收入">收入</van-tab>
 		<van-tab name="expense" title="支出">
-			<input-bill v-model="amountValue" :svg-name="iconName" :category="'餐饮'" :account="'支付宝'" />
-			<svg-bill class="svg-bill" @icon-click="handleIconClick" />
+			<input-bill v-model="amountValue" :svg-name="iconName" :category="category" :account="'支付宝'" />
+			<svg-bill class="svg-bill" :svg-list="svgList" @icon-click="handleIconClick" @edit-click="toEditPage" />
 		</van-tab>
 		<van-tab name="transfer" title="转账">转账</van-tab>
 		<template #nav-bottom>
-			<svg-icon name="cross" size="20px" class="close-icon" @click="handleClose" />
+			<svg-icon name="cross" size="20px" class="close-icon" @click="toBillPage" />
 		</template>
 	</van-tabs>
 	<div class="button-container">
@@ -40,36 +40,53 @@
 	/>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import CustomButton from "@/components/bill/CustomButton.vue";
 import InputBill from "@/components/bill/InputBill.vue";
 import SvgBill from "@/components/bill/SvgBill.vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { useUtilsStore } from "@/stores/utilsStores";
-import { postTransactionApi } from "@/apis/transaction/index";
+import { postTransactionApi } from "@/apis/transaction";
+import { getSVGApi, getUserSVGApi } from "@/apis/svg";
 const utilsStore = useUtilsStore();
 const router = useRouter();
 // 控制 Calendar 组件显示
 const showCalendar = ref(false);
 const active = ref("expense");
-const iconName = ref("icon_bonus");
+const iconName = ref("");
+const category = ref("");
 // 初始化账单变量
 const amountValue = ref(""); // 金额
 const formattedDate = ref(utilsStore.formatDateToMMDD(new Date())); // 格式化后的日期
 const dateValue = ref(utilsStore.formatDateToYYYYMMDD(new Date())); // 传给后端的日期
+// 获取svg图标
+const svgList = ref([]);
 
-// 图标点击事件
-const handleIconClick = (icon) => {
-	iconName.value = icon;
+onMounted(async () => {
+	await getSVG();
+});
+
+const getSVG = async () => {
+	try {
+		const data = await getUserSVGApi();
+		svgList.value = data.data;
+		// 初始化为第一个图标和分类
+		if (svgList.value.length > 0) {
+			iconName.value = svgList.value[0].svg_name;
+			category.value = svgList.value[0].category;
+		}
+	} catch (error) {
+		console.error("获取SVG失败:", error);
+	}
 };
 // 添加交易
 const createTransaction = async () => {
 	amountValue.value = formatAmount(amountValue.value);
 	const data = {
 		income: amountValue.value,
-		svg: "ice",
-		category: "餐饮",
+		svg: iconName.value,
+		category: category.value,
 		account: "支付宝",
 		date: dateValue.value,
 		remark: "备注",
@@ -77,14 +94,23 @@ const createTransaction = async () => {
 	try {
 		await postTransactionApi(data);
 		showToast("添加成功");
-		router.back();
+		history.back();
 	} catch (error) {
 		console.error("添加交易失败:", error);
 	}
 };
 // 关闭按钮
-const handleClose = () => {
-	router.back();
+const toBillPage = () => {
+	history.back();
+};
+// 编辑按钮点击事件
+const toEditPage = () => {
+	router.push({ name: "edit-svg" });
+};
+// 图标点击事件
+const handleIconClick = (icon) => {
+	iconName.value = icon.name;
+	category.value = icon.category;
 };
 // 处理日期选择
 const getSelectedDate = (date) => {
@@ -185,6 +211,5 @@ const formatAmount = (value) => {
 /* 图标组件样式 */
 .svg-bill {
 	overflow-y: auto; /* 溢出时可滑动 */
-	height: 390px;
 }
 </style>
