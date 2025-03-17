@@ -1,6 +1,8 @@
 <template>
 	<div class="index-wrapper">
+		<!-- 顶部导航栏，禁用底部边框 -->
 		<van-nav-bar :border="false" />
+		<!-- 空状态组件，当没有数据时显示 -->
 		<van-empty :image="index_empty" image-size="300" class="index-wrapper-empty">
 			<template #description>
 				<van-space direction="vertical" align="center">
@@ -9,16 +11,16 @@
 				</van-space>
 			</template>
 		</van-empty>
+		<!-- 底部箭头指引 -->
 		<div class="bottom-arrow">
 			<van-image width="20" :src="bottom_arrow" />
 		</div>
 	</div>
 </template>
+
 <script setup>
-import { useRouter } from "vue-router";
 import index_empty from "@/assets/images/index_empty.png";
 import bottom_arrow from "@/assets/images/bottom_arrow.png";
-const router = useRouter();
 </script>
 <style scoped>
 .index-wrapper {

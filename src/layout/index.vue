@@ -1,6 +1,6 @@
 <template>
 	<router-view />
-	<van-tabbar v-model="active" route>
+	<van-tabbar v-model="activeModel" route>
 		<van-tabbar-item name="balance">
 			<template #icon>
 				<bank-card theme="outline" size="22" :stroke-width="3" />
@@ -53,7 +53,7 @@ import { BankCard, Analysis, User, Comment } from "@icon-park/vue-next";
 const route = useRoute();
 const router = useRouter();
 
-const active = ref("add");
+const activeModel = ref("add");
 
 const handleAddClick = () => {
 	router.push({ name: "add-bill" });

@@ -1,4 +1,5 @@
 <template>
+	<!-- 顶部导航栏 -->
 	<van-nav-bar
 		:title="pageTitle"
 		left-text="个人资料"
@@ -7,24 +8,20 @@
 		@click-left="onClickLeft"
 		@click-right="onClickRight"
 	/>
+	<!-- 输入表单 -->
 	<van-cell-group inset>
 		<van-field v-model="newValue" :label="fieldLabel" placeholder="请输入新的内容" />
 	</van-cell-group>
 </template>
-
 <script setup>
 import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
-
 import { useUserStore } from "@/stores/userStores";
 import { postNicknameApi, postEmailApi } from "@/apis/user";
-const router = useRouter();
-const userStore = useUserStore();
 
+const userStore = useUserStore();
 // 使用 history.state 读取传递的数据
 const field = history.state?.field || "";
 const newValue = ref(history.state?.value || "");
-
 // 根据 field 生成显示的 label
 const fieldLabel = computed(() => {
 	switch (field) {
@@ -36,7 +33,6 @@ const fieldLabel = computed(() => {
 			return "未知";
 	}
 });
-
 // 生成页面标题
 const pageTitle = computed(() => `修改${fieldLabel.value}`);
 

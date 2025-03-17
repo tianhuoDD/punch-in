@@ -9,6 +9,45 @@ vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem + svg-sprite-loader
 ## 项目使用辅助
 
 1. 回退路由：`router.back()` 或 `history.back()`
+2. 前端的`apis`文件夹必须与后端`apis`文件夹内容对应
+3. 对于SVG引用，需要在`assets/icons`文件夹下导入。此外如果svg拥有分组属性，需要在`icons/`下另创文件夹，并在`createSvgIconsPlugin({iconDirs:[]})`中导入相应文件夹。
+4. 当某个页面需要组件时，`components`和`views`的文件夹应该一一对应。
+5. 对于页面的返回：`goBack()`
+   对于页面的跳转使用：`goPage()=>{router.push({name: page})}`
+   对于逻辑的处理使用：`handleData()`
+   对于验证输入的使用：`validateInput()`
+   对于数据的获取：`fetchData()`
+   对于发送方法：`sendData()`
+
+   ***
+
+   对于`v-model`属性定义最好使用：xxxModel
+
+6. JS部分：
+
+   ```js
+   /* 引用：上方为依赖引入；下方为组件引入 */
+   import { ref } from "vue";
+   import { useRouter } from "vue-router";
+   import AddBill from "@/components/bill/AddBill.vue";
+
+   /* 变量定义 */
+   const router = useRouter();
+   /* Props 定义 */
+   const props = defineProps({
+   	userId: Number,
+   	userName: String,
+   	isPremium: Boolean,
+   });
+   /* 生命周期函数 */
+   onMounted(() => {
+   	console.log("组件已挂载");
+   });
+   /* 方法定义 */
+   const goHome = () => {
+   	router.push({ name: "index" });
+   };
+   ```
 
 ## 项目依赖
 

@@ -13,7 +13,7 @@
 			<van-button plain hairline round type="success" @click="openBlog">访问Romcere's Blog</van-button>
 			<van-button plain hairline round type="success" @click="openGithub">访问Romcere's GitHub</van-button>
 		</van-space>
-		<van-button plain hairline type="primary" style="margin-top: 30px" @click="goHome">返回首页</van-button>
+		<van-button plain hairline type="primary" style="margin-top: 30px" @click="goHome()">返回首页</van-button>
 	</div>
 </template>
 

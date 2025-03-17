@@ -3,11 +3,9 @@
 		<van-button v-if="!isSending && !isCountingDown" type="primary" size="small" @click="sendCaptcha">
 			获取验证码
 		</van-button>
-
 		<van-button v-if="isSending" type="primary" size="small" loading loading-text="发送中..." disabled>
 			获取验证码
 		</van-button>
-
 		<van-button v-if="isCountingDown" type="primary" size="small" disabled>
 			<van-count-down
 				ref="countDown"
@@ -15,7 +13,7 @@
 				:time="countDownTime"
 				:auto-start="true"
 				format="ss"
-				@finish="onFinish"
+				@finish="handleFinish"
 			/>
 			重新发送
 		</van-button>
@@ -49,7 +47,7 @@ const sendCaptcha = () => {
 	});
 };
 // 倒计时结束时调用
-const onFinish = () => {
+const handleFinish = () => {
 	// 倒计时结束，恢复按钮状态
 	isCountingDown.value = false;
 };

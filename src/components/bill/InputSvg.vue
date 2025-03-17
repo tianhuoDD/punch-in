@@ -6,7 +6,6 @@
 	</van-field>
 </template>
 <script setup>
-import { ref } from "vue";
 import SvgIcon from "../SvgIcon.vue";
 
 defineProps({

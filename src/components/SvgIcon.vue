@@ -6,7 +6,10 @@
 
 <script setup>
 import { computed } from "vue";
-
+// 计算最终的宽度和高度，如果传递了 size，则使用 size
+const computedWidth = computed(() => (props.size ? props.size : props.width || "30px"));
+const computedHeight = computed(() => (props.size ? props.size : props.height || "30px"));
+// 定义 props
 const props = defineProps({
 	prefix: {
 		type: String,
@@ -41,8 +44,4 @@ const props = defineProps({
 		default: "10px",
 	},
 });
-
-// 计算最终的宽度和高度，如果传递了 size，则使用 size
-const computedWidth = computed(() => (props.size ? props.size : props.width || "30px"));
-const computedHeight = computed(() => (props.size ? props.size : props.height || "30px"));
 </script>

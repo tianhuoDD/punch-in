@@ -45,17 +45,14 @@
 import { ref, onMounted } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { getTransactionsApi } from "@/apis/transaction/index.js";
-
+// 初始化变量
 const transactions = ref([]);
 const totalIncome = ref(0);
 const totalExpense = ref(0);
 
-// 格式化日期
-const formatDate = (dateString) => {
-	const date = new Date(dateString);
-	return `${date.getMonth() + 1}月${date.getDate()}日`;
-};
-
+onMounted(() => {
+	fetchTransactions();
+});
 // 获取交易数据
 const fetchTransactions = async () => {
 	try {
@@ -74,10 +71,11 @@ const fetchTransactions = async () => {
 		console.error("获取交易数据失败:", error);
 	}
 };
-
-onMounted(() => {
-	fetchTransactions();
-});
+// 格式化日期
+const formatDate = (dateString) => {
+	const date = new Date(dateString);
+	return `${date.getMonth() + 1}月${date.getDate()}日`;
+};
 </script>
 <style scoped>
 .title {

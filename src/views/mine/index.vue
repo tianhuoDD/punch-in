@@ -1,13 +1,17 @@
 <template>
 	<div class="mine-wrapper">
+		<!-- 顶部导航栏 -->
 		<van-nav-bar>
 			<template #right>
 				<van-icon name="setting-o" size="18" />
 			</template>
 		</van-nav-bar>
+		<!-- 个人信息展示 -->
 		<van-cell is-link center to="/mine/personal-info">
 			<template #title>
+				<!-- 水平排列 -->
 				<van-space>
+					<!-- 头像 -->
 					<van-image
 						round
 						width="5rem"
@@ -16,7 +20,7 @@
 						@click.stop="handleImageClick"
 						@error="handleImageError"
 					/>
-
+					<!-- 个人信息 -->
 					<van-space direction="vertical" size="0">
 						<h1 class="username">{{ nickname }}</h1>
 						<span class="description">
@@ -28,7 +32,9 @@
 				</van-space>
 			</template>
 		</van-cell>
+		<!-- 间隔分割行 -->
 		<van-cell size="large" style="background-color: var(--bg-gray-color)" />
+		<!-- 设置 -->
 		<van-cell is-link center>
 			<template #title>
 				<van-space>
@@ -37,6 +43,7 @@
 				</van-space>
 			</template>
 		</van-cell>
+		<!-- 关于我们 -->
 		<van-cell is-link center>
 			<template #title>
 				<van-space>
@@ -45,6 +52,7 @@
 				</van-space>
 			</template>
 		</van-cell>
+		<!-- 退出登录 -->
 		<van-cell is-link center @click="handleLogout">
 			<template #title>
 				<van-space>
@@ -72,6 +80,20 @@ const userInfo = userStore.userInfo;
 const avatarUrl = ref(userInfo.avatar ? utilsStore.getImageUrl(userInfo.avatar) : default_avatar);
 const nickname = userInfo.nickname;
 const day = utilsStore.calculateDaysDifference(userInfo.created_at);
+// 头像预览
+const handleImageClick = () => {
+	showImagePreview({
+		images: [avatarUrl.value],
+		startPosition: 0,
+		showIndex: false,
+		closeable: true,
+	});
+};
+// 当图片加载失败时，使用默认头像
+const handleImageError = () => {
+	avatarUrl.value = default_avatar;
+};
+// 退出登录
 const handleLogout = async () => {
 	if (userStore.token) {
 		showConfirmDialog({
@@ -88,19 +110,6 @@ const handleLogout = async () => {
 		showToast("您还未登录,请登录...");
 		router.push({ name: "login" });
 	}
-};
-// 图片预览
-// 当图片加载失败时，使用默认头像
-const handleImageError = () => {
-	avatarUrl.value = default_avatar;
-};
-const handleImageClick = () => {
-	showImagePreview({
-		images: [avatarUrl.value],
-		startPosition: 0,
-		showIndex: false,
-		closeable: true,
-	});
 };
 </script>
 <style scoped>

@@ -18,7 +18,7 @@
 		<!-- 分隔线 -->
 		<van-divider :style="{ color: 'var(--login-font-color)' }"> 使用 PunchIn 账户登录 </van-divider>
 		<!-- 登录表单 -->
-		<van-form style="margin-top: 20px" @submit="onLoginSubmit" @failed="onLoginFailed">
+		<van-form style="margin-top: 20px" @submit="handleLoginSubmit" @failed="handleLoginFailed">
 			<van-cell-group inset>
 				<van-field
 					v-model="username"
@@ -52,7 +52,7 @@
 			<van-col :span="24">
 				<van-grid column-num="2">
 					<van-grid-item text="忘记密码" />
-					<van-grid-item text="注册账号" @click="toRegister" />
+					<van-grid-item text="注册账号" @click="goRegister" />
 				</van-grid>
 			</van-col>
 		</van-row>
@@ -69,7 +69,7 @@ import { useUserStore } from "@/stores/userStores";
 const router = useRouter();
 const rulesStore = useRulesStore();
 const userStore = useUserStore();
-/* punch-in 登录 */
+// punch-in 登录
 const username = ref("");
 const password = ref("");
 // 隐私协议复选框
@@ -78,8 +78,8 @@ const isProtocolChecked = ref();
 const usernameRules = [{ validator: rulesStore.usernameValidate, trigger: "onBlur" }];
 const passwordRules = [{ validator: rulesStore.passwordValidate, trigger: "onBlur" }];
 const protocolRules = [{ validator: rulesStore.protocolValidate, trigger: "onSubmit" }];
-/* 提交表单成功或失败回调 */
-const onLoginSubmit = async () => {
+// 提交表单成功或失败回调
+const handleLoginSubmit = async () => {
 	showLoadingToast("登录中...");
 	try {
 		const data = await postLoginApi({
@@ -98,14 +98,15 @@ const onLoginSubmit = async () => {
 		showToast(errMsg);
 	}
 };
-const onLoginFailed = () => {
+// 处理登录失败
+const handleLoginFailed = () => {
 	showLoadingToast("验证表单规则中...");
 	setTimeout(() => {
 		closeToast();
 	}, 0);
 };
-/* 跳转注册页面 */
-const toRegister = () => {
+// 跳转注册页面
+const goRegister = () => {
 	router.push({ name: "register" });
 };
 </script>

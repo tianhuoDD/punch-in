@@ -1,7 +1,7 @@
 <template>
 	<van-divider class="input-divider" style="margin-top: 10px" />
 	<van-field
-		v-model="formattedValue"
+		v-model="formattedModel"
 		type="number"
 		class="input-bill"
 		placeholder="0.00"
@@ -20,30 +20,7 @@ import { computed } from "vue";
 import { useVModel } from "@vueuse/core";
 import SvgIcon from "../SvgIcon.vue";
 
-// 定义 props
-const props = defineProps({
-	modelValue: {
-		type: [Number, String],
-		default: 0,
-	},
-	svgName: {
-		type: String,
-		default: "",
-	},
-	category: {
-		type: String,
-		default: "",
-	},
-	account: {
-		type: String,
-		default: "",
-	},
-});
-
-// 使用 useVModel 处理双向绑定
-const model = useVModel(props, "modelValue");
-
-const formattedValue = computed({
+const formattedModel = computed({
 	get: () => formatValue(model.value),
 	set: (newValue) => {
 		// 去除首尾空格
@@ -78,34 +55,47 @@ const formattedValue = computed({
 		model.value = val;
 	},
 });
-
+// 定义 props
+const props = defineProps({
+	modelValue: {
+		type: [Number, String],
+		default: 0,
+	},
+	svgName: {
+		type: String,
+		default: "",
+	},
+	category: {
+		type: String,
+		default: "",
+	},
+	account: {
+		type: String,
+		default: "",
+	},
+});
+// 使用 useVModel 处理双向绑定
+const model = useVModel(props, "modelValue");
 // 格式化金额，确保最大两位小数
 const formatValue = (value) => {
 	// 如果为空值，返回默认的 0.00
 	if (value === null || value === undefined || value === "") {
 		return "0.00";
 	}
-
 	// 转换为字符串并去除多余的空格
 	let val = value.toString().trim();
-
 	// 过滤掉非数字和小数点
 	val = val.replace(/[^\d.]/g, "");
-
 	// 避免以 `.` 开头
 	val = val.replace(/^\./, "");
-
 	// 只保留一个 `.`
 	val = val.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-
 	// 限制小数点后最多两位
 	val = val.replace(/^(\d+)\.(\d{2}).*$/, "$1.$2");
-
 	// 如果没有小数部分，自动补上 .00
 	if (!val.includes(".")) {
 		val += ".00";
 	}
-
 	// 返回格式化后的金额
 	return val;
 };

@@ -4,8 +4,8 @@
 		left-text="返回"
 		right-text="添加"
 		left-arrow
-		@click-left="onClickLeft"
-		@click-right="onClickRight"
+		@click-left="goBack"
+		@click-right="goAddSvg"
 	/>
 	<!-- 遍历 categoryList 生成单元格 -->
 	<van-cell v-for="(icon, index) in svgList" :key="index" is-link class="edit-svg-cell">
@@ -26,13 +26,16 @@ import SvgIcon from "@/components/SvgIcon.vue";
 import { getUserSVGApi } from "@/apis/svg";
 
 const router = useRouter();
-// 导航栏按钮点击事件
-const onClickLeft = () => history.back();
-const onClickRight = () => router.push({ name: "add-svg" });
-
 // 定义响应式数据
 const svgList = ref([]);
 
+onMounted(async () => {
+	await getUserSvg();
+});
+
+// 导航栏按钮点击事件
+const goBack = () => history.back();
+const goAddSvg = () => router.push({ name: "add-svg" });
 // 获取 SVG 图标数据
 const getUserSvg = async () => {
 	try {
@@ -42,10 +45,6 @@ const getUserSvg = async () => {
 		console.error("获取SVG失败:", error);
 	}
 };
-
-onMounted(async () => {
-	await getUserSvg();
-});
 </script>
 <style scoped>
 .edit-svg-cell :deep(.van-cell__title) {

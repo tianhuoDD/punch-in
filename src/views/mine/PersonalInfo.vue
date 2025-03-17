@@ -1,8 +1,9 @@
 <template>
 	<div class="personal-container">
-		<van-nav-bar title="我的个人资料" left-text="我的" left-arrow @click-left="onClickLeft" />
+		<!-- 顶部导航栏 -->
+		<van-nav-bar title="我的个人资料" left-text="我的" left-arrow @click-left="goBack" />
 		<van-cell class="space" :border="false" />
-		<!-- 可修改的内容 -->
+		<!-- 头像上传区域 -->
 		<van-cell class="avatar">
 			<template #title>
 				<div class="uploader-wrapper">
@@ -27,9 +28,9 @@
 				</div>
 			</template>
 		</van-cell>
-
 		<van-cell class="space" :border="false" />
-		<van-cell is-link @click="goToEdit('nickname', nickname)">
+		<!-- 可编辑的信息项 -->
+		<van-cell is-link @click="goEditInfo('nickname', nickname)">
 			<template #title>
 				<van-space size="20px">
 					<span class="cell-title">昵称</span>
@@ -37,7 +38,7 @@
 				</van-space>
 			</template>
 		</van-cell>
-		<van-cell is-link @click="goToEdit('email', email)">
+		<van-cell is-link @click="goEditInfo('email', email)">
 			<template #title>
 				<van-space size="20px">
 					<span class="cell-title">邮箱</span>
@@ -93,15 +94,15 @@ const email = userInfo.email;
 const username = userInfo.username;
 const createdAt = utilsStore.formatTime(userInfo.created_at);
 const id = userInfo.id;
-const onClickLeft = () => {
+// 上传头像
+const avatarList = ref([{ url: avatarUrl }]);
+const goBack = () => {
 	history.back();
 };
-const goToEdit = (field, value) => {
+const goEditInfo = (field, value) => {
 	router.push({ name: "edit-info", state: { field, value } });
 };
 
-// 上传头像
-const avatarList = ref([{ url: avatarUrl }]);
 const handleAvatarUpload = async (file) => {
 	const formData = new FormData();
 	formData.append("avatar", file.file);

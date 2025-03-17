@@ -1,6 +1,13 @@
 <template>
 	<div class="login-wrapper">
-		<van-form ref="registerFormRef" style="margin-top: 20px" @submit="onRegisterSubmit" @failed="onRegisterFailed">
+		<!-- 注册表单 -->
+		<van-form
+			ref="registerFormRef"
+			style="margin-top: 20px"
+			@submit="handleRegisterSubmit"
+			@failed="handleRegisterFailed"
+		>
+			<!-- 表单输入框组 -->
 			<van-cell-group inset>
 				<van-field v-model="username" name="username" label="用户名" placeholder="用户名" :rules="usernameRules" />
 				<van-field
@@ -20,7 +27,6 @@
 					:rules="confirmPasswordRules"
 				/>
 				<van-field v-model="email" name="email" label="邮箱" placeholder="邮箱" :rules="emailRules" />
-
 				<van-field
 					v-model="captcha"
 					name="captcha"
@@ -33,7 +39,6 @@
 						<captcha-button @send-captcha="sendCaptcha" />
 					</template>
 				</van-field>
-
 				<van-field name="protocol" label="复选框" :rules="protocolRules">
 					<template #input>
 						<van-checkbox v-model="isProtocolChecked" shape="square">
@@ -42,6 +47,7 @@
 					</template>
 				</van-field>
 			</van-cell-group>
+			<!-- 提交按钮 -->
 			<div style="display: flex; justify-content: center; align-items: center">
 				<van-button plain type="primary" native-type="submit" class="login-reg-button">立即注册</van-button>
 			</div>
@@ -52,13 +58,13 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import "@/styles/loginFormField.css";
-import CaptchaButton from "@/components/CaptchaButton.vue";
+import CaptchaButton from "@/components/login/CaptchaButton.vue";
 import { useRulesStore } from "@/stores/rulesStores";
 import { postRegisterApi } from "@/apis/login/index";
 const router = useRouter();
 const rulesStore = useRulesStore();
 const registerFormRef = ref();
-/* punch-in 注册 */
+// punch-in 注册
 const username = ref("");
 const password = ref("");
 const confirmPassword = ref("");
@@ -72,21 +78,9 @@ const confirmPasswordRules = [{ validator: rulesStore.confirmPasswordValidate, t
 const emailRules = [{ validator: rulesStore.emailValidate, trigger: "onBlur" }];
 const captchaRules = [{ validator: rulesStore.captchaValidate, trigger: "onBlur" }];
 const protocolRules = [{ validator: rulesStore.protocolValidate, trigger: "onSubmit" }];
-// 发送验证码事件
-const sendCaptcha = async (callback) => {
-	try {
-		await registerFormRef.value.validate("email");
-		setTimeout(() => {
-			// 这里去执行实际的发送逻辑，比如 emits("sendCaptcha")
-			showToast("发送验证码成功,请查看邮箱...");
-			callback("success");
-		}, 500);
-	} catch {
-		callback("fail");
-	}
-};
+
 // 注册成功
-const onRegisterSubmit = async () => {
+const handleRegisterSubmit = async () => {
 	try {
 		const data = await postRegisterApi({
 			username: username.value,
@@ -100,11 +94,24 @@ const onRegisterSubmit = async () => {
 	}
 };
 // 注册失败
-const onRegisterFailed = () => {
+const handleRegisterFailed = () => {
 	showLoadingToast("验证表单规则中...");
 	setTimeout(() => {
 		closeToast();
 	}, 0);
+};
+// 发送验证码事件
+const sendCaptcha = async (callback) => {
+	try {
+		await registerFormRef.value.validate("email");
+		setTimeout(() => {
+			// 这里去执行实际的发送逻辑，比如 emits("sendCaptcha")
+			showToast("发送验证码成功,请查看邮箱...");
+			callback("success");
+		}, 500);
+	} catch {
+		callback("fail");
+	}
 };
 </script>
 <style scoped>
