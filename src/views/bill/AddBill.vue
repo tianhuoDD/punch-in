@@ -69,8 +69,8 @@ onMounted(async () => {
 // 获取用户svg
 const fetchUserSvg = async () => {
 	try {
-		const data = await getUserSVGApi();
-		svgList.value = data.data;
+		const { data } = await getUserSVGApi();
+		svgList.value = data;
 		// 初始化为第一个图标和分类
 		if (svgList.value.length > 0) {
 			iconName.value = svgList.value[0].svg_name;
@@ -83,7 +83,7 @@ const fetchUserSvg = async () => {
 // 添加交易
 const handleCreateTransaction = async () => {
 	amountValue.value = formatAmount(amountValue.value);
-	const data = {
+	const transaction = {
 		income: amountValue.value,
 		svg: iconName.value,
 		category: category.value,
@@ -92,8 +92,8 @@ const handleCreateTransaction = async () => {
 		remark: "备注",
 	};
 	try {
-		await postTransactionApi(data);
-		showToast("添加成功");
+		const { message } = await postTransactionApi(transaction);
+		showToast(message);
 		history.back();
 	} catch (error) {
 		console.error("添加交易失败:", error);

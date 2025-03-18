@@ -22,6 +22,7 @@ import { ref, onMounted } from "vue";
 import InputSvg from "@/components/bill/InputSvg.vue";
 import SvgBill from "@/components/bill/SvgBill.vue";
 import { getSVGApi, postUserSVGApi } from "@/apis/svg";
+import { showToast } from "vant";
 
 const categoryModel = ref("");
 const iconName = ref("");
@@ -35,8 +36,8 @@ onMounted(() => {
 // 获取SVG数据
 const fetchUserSvg = async () => {
 	try {
-		const data = await getSVGApi();
-		svgList.value = data.data;
+		const { data } = await getSVGApi();
+		svgList.value = data;
 		// 初始化为第一个图标和分类
 		if (svgList.value.length > 0) {
 			iconName.value = svgList.value[0].svg_name;
@@ -51,10 +52,11 @@ const goBack = () => history.back();
 // 添加svg
 const handleAddSvg = async () => {
 	try {
-		await postUserSVGApi({
+		const { message } = await postUserSVGApi({
 			svg_name: iconName.value,
 			category: categoryModel.value,
 		});
+		showToast(message);
 		history.back();
 	} catch (error) {
 		console.error("添加失败:", error);

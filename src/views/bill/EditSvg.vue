@@ -39,8 +39,8 @@ const goAddSvg = () => router.push({ name: "add-svg" });
 // 获取 SVG 图标数据
 const getUserSvg = async () => {
 	try {
-		const data = await getUserSVGApi();
-		svgList.value = data.data; // 直接赋值分类列表
+		const { data } = await getUserSVGApi();
+		svgList.value = data; // 直接赋值分类列表
 	} catch (error) {
 		console.error("获取SVG失败:", error);
 	}

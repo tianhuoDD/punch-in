@@ -108,8 +108,8 @@ const handleAvatarUpload = async (file) => {
 	formData.append("avatar", file.file);
 	try {
 		let updatedInfo = { ...userStore.userInfo };
-		const data = await postAvatarApi(formData);
-		showToast(data.message);
+		const { message, data } = await postAvatarApi(formData);
+		showToast(message);
 		// 更新 Pinia 的 userInfo
 		updatedInfo.avatar = data.avatar_url;
 		userStore.setUserInfo(updatedInfo);

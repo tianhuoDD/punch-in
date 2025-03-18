@@ -6,19 +6,29 @@ romAxios.initAxios({
 	timeout: 20000, // 请求超时时间
 });
 romAxios.addResponseInterceptor(
-	(data) => {
-		return Promise.resolve(data);
+	(res) => {
+		// 解析后端返回数据
+		const { success, message } = res || {};
+		if (success) {
+			return Promise.resolve(res); // 返回完整结构
+		} else {
+			showToast(message || "响应成功,请求失败");
+			return Promise.reject(message);
+		}
 	},
 	({ errMsg, response }) => {
-		const msg = response.data.message ? response.data.message : errMsg;
-		console.error("错误的response：", response);
-		if (!response.data.token) {
+		// 确保 response 和 response.data 存在
+		const msg = response?.data?.message || errMsg || "响应失败";
+		// token 检查
+		if (!response?.data?.data?.token) {
 			showToast(msg);
 			router.push({ name: "login" });
 		}
+		console.error("错误的 response：", response);
 		return Promise.reject(msg);
 	},
 );
+
 export default romAxios;
 
 /*

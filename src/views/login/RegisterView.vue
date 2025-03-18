@@ -82,12 +82,12 @@ const protocolRules = [{ validator: rulesStore.protocolValidate, trigger: "onSub
 // 注册成功
 const handleRegisterSubmit = async () => {
 	try {
-		const data = await postRegisterApi({
+		const { message } = await postRegisterApi({
 			username: username.value,
 			password: password.value,
 			email: email.value,
 		});
-		showToast(data.message);
+		showToast(message);
 		router.push({ name: "login" });
 	} catch (errMsg) {
 		showToast(errMsg);

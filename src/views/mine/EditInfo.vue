@@ -51,12 +51,12 @@ const onClickRight = async () => {
 		let updatedInfo = { ...userStore.userInfo };
 
 		if (field === "nickname") {
-			const data = await postNicknameApi({ nickname: newValue.value });
-			showToast(data.message);
+			const { message } = await postNicknameApi({ nickname: newValue.value });
+			showToast(message);
 			updatedInfo.nickname = newValue.value; // 更新 Pinia 的 userInfo
 		} else if (field === "email") {
-			const data = await postEmailApi({ email: newValue.value });
-			showToast(data.message);
+			const { message } = await postEmailApi({ email: newValue.value });
+			showToast(message);
 			updatedInfo.email = newValue.value; // 更新 Pinia 的 userInfo
 		}
 		// 更新 Pinia Store 和 localStorage

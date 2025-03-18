@@ -82,14 +82,14 @@ const protocolRules = [{ validator: rulesStore.protocolValidate, trigger: "onSub
 const handleLoginSubmit = async () => {
 	showLoadingToast("登录中...");
 	try {
-		const data = await postLoginApi({
+		const { message, data } = await postLoginApi({
 			username: username.value,
 			password: password.value,
 		});
 		if (data.token) {
 			userStore.setToken(data.token); // 存储 token
 			userStore.setUserInfo(data.user_info); // 存储 userInfo
-			showToast(data.message);
+			showToast(message);
 			router.push({ name: "index" });
 		} else {
 			showToast("没有获取到Token,登录失败...");

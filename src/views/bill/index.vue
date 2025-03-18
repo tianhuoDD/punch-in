@@ -56,8 +56,8 @@ onMounted(() => {
 // 获取交易数据
 const fetchTransactions = async () => {
 	try {
-		const data = await getTransactionsApi();
-		transactions.value = data || [];
+		const { data } = await getTransactionsApi();
+		transactions.value = data;
 
 		// 计算总收入和总支出
 		totalIncome.value = transactions.value

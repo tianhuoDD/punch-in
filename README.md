@@ -49,6 +49,17 @@ vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem + svg-sprite-loader
    };
    ```
 
+7. 统一的api处理方法：
+
+   ```js
+   try {
+   	const { message, data } = await getDataApi();
+   	showToast(message);
+   } catch (errMsg) {
+   	showToast(errMsg);
+   }
+   ```
+
 ## 项目依赖
 
 > 这里列出的是后添加的依赖
