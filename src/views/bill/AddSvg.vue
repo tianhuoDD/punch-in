@@ -28,7 +28,6 @@ const transactionStore = useTransactionStore();
 const categoryModel = ref("");
 const svgList = computed(() => transactionStore.allSvgList || []);
 const iconName = ref(svgList.value[0]?.svg_name);
-const category = ref(svgList.value[0]?.category);
 // 组件挂载时获取数据
 onMounted(() => {
 	fetchUserSvg();
@@ -38,11 +37,6 @@ const fetchUserSvg = async () => {
 	try {
 		const { data } = await getSVGApi();
 		transactionStore.allSvgList = data;
-		// 初始化为第一个图标和分类
-		if (svgList.value.length > 0) {
-			iconName.value = svgList.value[0].svg_name;
-			category.value = svgList.value[0].category;
-		}
 	} catch (error) {
 		console.error("获取SVG失败:", error);
 	}

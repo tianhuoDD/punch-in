@@ -73,11 +73,6 @@ const fetchUserSvg = async () => {
 	try {
 		const { data } = await getUserSVGApi();
 		transactionStore.userSvgList = data;
-		// 初始化为第一个图标和分类
-		if (svgList.value.length > 0) {
-			iconName.value = svgList.value[0].svg_name;
-			category.value = svgList.value[0].category;
-		}
 	} catch (error) {
 		console.error("获取SVG失败:", error);
 	}

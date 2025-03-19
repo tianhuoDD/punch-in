@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/stores/userStores";
 import Layout from "@/layout/index.vue";
 import loginLayout from "@/layout/login-layout/index.vue";
-import { showToast } from "vant";
+
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL), // 创建历史记录，用于路由导航
 	routes: [

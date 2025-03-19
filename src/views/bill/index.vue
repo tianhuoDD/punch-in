@@ -13,45 +13,55 @@
 				</template>
 				<div class="step-total-title-right">
 					<p class="title">1月支出</p>
-					<p class="title">{{ totalExpense }}</p>
+					<p class="title">{{ totalExpense.toFixed(2) }}</p>
 				</div>
 				<div class="step-total-title-left">
 					<p class="title">1月收入</p>
-					<p class="title">{{ totalIncome }}</p>
+					<p class="title">{{ totalIncome.toFixed(2) }}</p>
 				</div>
 			</van-step>
 			<!-- 循环打印交易记录 -->
 			<van-step v-for="(transaction, index) in transactions" :key="index" class="step-date">
 				<template #inactive-icon>
-					<i class="date-bg"></i>
-					<span class="date-text">{{ formatDate(transaction.date) }}</span>
+					<svg-icon :name="transaction.svg" padding="0px" />
 				</template>
-				<span class="title"
-					>{{ transaction.type === "expense" ? "支出" : "收入" }}
-					{{ transaction.income ? transaction.income : "0.00" }}</span
-				>
+				<!-- 显示支出，确保 0 也显示 -->
+				<span v-if="transaction.expense !== null && transaction.expense !== undefined" class="title">
+					{{ transaction.category }} {{ transaction.expense.toFixed(2) }}
+				</span>
+				<!-- 显示收入，确保 0 也显示 -->
+				<span v-if="transaction.income !== null && transaction.income !== undefined" class="title income">
+					{{ transaction.income.toFixed(2) }} {{ transaction.category }}
+				</span>
 			</van-step>
 
-			<!-- 最底部提示 -->
-			<van-step>
+			<!-- 最底部的笑脸提示 -->
+			<van-step style="margin-bottom: 120px">
 				<template #inactive-icon>
-					<svg-icon name="smile" padding="0" width="30px" height="30px" color="var(--font-black-color)" />
+					<svg-icon name="smile" padding="0px" width="30px" height="30px" color="var(--font-black-color)" />
 				</template>
 			</van-step>
 		</van-steps>
 	</div>
 </template>
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { onMounted, computed } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { useTransactionStore } from "@/stores/transactionStores";
 import { getTransactionsApi } from "@/apis/transaction/index.js";
-import { showToast } from "vant";
 const transactionStore = useTransactionStore();
 // 初始化变量
 const transactions = computed(() => transactionStore.transactions);
-const totalIncome = ref(0);
-const totalExpense = ref(0);
+const totalIncome = computed(() =>
+	transactionStore.transactions
+		.filter((t) => t.income !== null) // 筛选收入
+		.reduce((sum, t) => sum + Number(t.income), 0),
+);
+const totalExpense = computed(() =>
+	transactionStore.transactions
+		.filter((t) => t.expense !== null) // 筛选支出
+		.reduce((sum, t) => sum + Number(t.expense), 0),
+);
 
 onMounted(() => {
 	fetchTransactions();
@@ -61,21 +71,12 @@ const fetchTransactions = async () => {
 	try {
 		const { data } = await getTransactionsApi();
 		transactionStore.transactions = data;
-		calculateTotals(); // 计算总收入和支出
+		// calculateTotals(); // 计算总收入和支出
 	} catch (errMsg) {
 		showToast(errMsg);
 	}
 };
-// 计算总收入和总支出
-const calculateTotals = () => {
-	totalIncome.value = transactions.value
-		.filter((t) => t.type === "income")
-		.reduce((sum, t) => sum + Number(t.amount), 0);
 
-	totalExpense.value = transactions.value
-		.filter((t) => t.type === "expense")
-		.reduce((sum, t) => sum + Number(t.amount), 0);
-};
 // 格式化日期
 const formatDate = (dateString) => {
 	const date = new Date(dateString);
@@ -86,6 +87,10 @@ const formatDate = (dateString) => {
 .title {
 	font-size: 16px;
 	color: var(--font-black-color);
+}
+.income {
+	position: relative;
+	left: -125px;
 }
 .bill {
 	display: flex;
@@ -104,7 +109,7 @@ const formatDate = (dateString) => {
 	margin-bottom: 0;
 }
 .bill .van-hairline {
-	padding-bottom: 50px; /* 线条长度 */
+	padding-bottom: 40px; /* 线条长度 */
 	margin-bottom: 25px;
 }
 .bill :deep(.van-step__line) {
@@ -115,7 +120,7 @@ const formatDate = (dateString) => {
 	display: flex;
 	justify-content: center;
 	padding-left: 110px;
-	padding-top: 50px;
+	padding-top: 50px; /* 线条长度 */
 }
 /* 总计提示样式 */
 .step-total {
@@ -140,7 +145,7 @@ const formatDate = (dateString) => {
 }
 .step-total-title-right {
 	position: absolute;
-	right: -40px;
+	right: -15px;
 	text-align: center;
 }
 .step-total-title-left {
