@@ -116,6 +116,7 @@ router.beforeEach((to, from, next) => {
 	if (to.meta.requiresAuth && !token) {
 		// 如果需要认证并且没有 token，则跳转到登录页面
 		showToast({ message: "请先登录...", duration: 800 });
+
 		next({ name: "login" });
 	} else {
 		// 否则继续访问

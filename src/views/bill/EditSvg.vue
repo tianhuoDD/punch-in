@@ -8,7 +8,7 @@
 		@click-right="goAddSvg"
 	/>
 	<!-- 遍历 categoryList 生成单元格 -->
-	<van-cell v-for="(icon, index) in svgList" :key="index" is-link class="edit-svg-cell">
+	<van-cell v-for="(icon, index) in svgList" :key="index" is-link class="edit-svg-cell" @click="goEditSvg(icon)">
 		<template #title>
 			<p>{{ icon.category }}</p>
 		</template>
@@ -35,8 +35,19 @@ onMounted(async () => {
 });
 
 // 导航栏按钮点击事件
-const goBack = () => history.back();
+const goBack = () => router.push({ name: "add-bill" });
 const goAddSvg = () => router.push({ name: "add-svg" });
+const goEditSvg = (icon) => {
+	router.push({
+		name: "add-svg",
+		query: {
+			svg_id: icon.id,
+			svg_name: icon.svg_name,
+			category: icon.category,
+		},
+	});
+};
+
 // 获取 SVG 图标数据
 const getUserSvg = async () => {
 	try {

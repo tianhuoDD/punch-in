@@ -8,7 +8,7 @@ vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem + svg-sprite-loader
 
 ## 项目使用辅助
 
-1. 回退路由：`router.back()` 或 `history.back()`
+1. 回退路由：`router.back()` 或 `history.back()`；不建议使用，而是直接跳转。
 2. 前端的`apis`文件夹必须与后端`apis`文件夹内容对应
 3. 对于SVG引用，需要在`assets/icons`文件夹下导入。此外如果svg拥有分组属性，需要在`icons/`下另创文件夹，并在`createSvgIconsPlugin({iconDirs:[]})`中导入相应文件夹。
 4. 当某个页面需要组件时，`components`和`views`的文件夹应该一一对应。
@@ -59,6 +59,8 @@ vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem + svg-sprite-loader
    	showToast(errMsg);
    }
    ```
+
+8. **当你修改关于API的内容时，*需要强制刷新*才可使其完全生效**
 
 ## 项目依赖
 

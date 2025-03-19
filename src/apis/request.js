@@ -12,15 +12,14 @@ romAxios.addResponseInterceptor(
 		if (success) {
 			return Promise.resolve(res); // 返回完整结构
 		} else {
-			showToast(message || "响应成功,请求失败");
 			return Promise.reject(message);
 		}
 	},
 	({ errMsg, response }) => {
 		// 确保 response 和 response.data 存在
-		const msg = response?.data?.message || errMsg || "响应失败";
+		const msg = response?.data?.message || errMsg;
 		// token 检查
-		if (!response?.data?.data?.token) {
+		if (response?.data?.data && response.data.data.token) {
 			showToast(msg);
 			router.push({ name: "login" });
 		}

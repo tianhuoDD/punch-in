@@ -17,7 +17,7 @@ const goIndex = () => {
 	router.push({ name: "index" });
 };
 const goBack = () => {
-	router.back();
+	history.back();
 };
 </script>
 <style scoped>

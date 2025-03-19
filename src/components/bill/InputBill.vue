@@ -105,6 +105,7 @@ const formatValue = (value) => {
 .input-bill :deep(.van-cell__title) {
 	display: flex;
 	align-items: center;
+	width: auto;
 }
 .title {
 	margin-left: 10px;

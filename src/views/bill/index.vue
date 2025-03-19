@@ -1,6 +1,8 @@
 <template>
 	<div class="bill">
-		<van-nav-bar title="默认账本" />
+		<van-sticky>
+			<van-nav-bar title="默认账本" />
+		</van-sticky>
 		<van-steps direction="vertical" :active="-1" class="bill-steps">
 			<!-- 总计提示 -->
 			<van-step class="step-total">

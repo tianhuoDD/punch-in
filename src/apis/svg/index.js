@@ -15,3 +15,8 @@ export const postUserSVGApi = async (data) => {
 	const res = await romAxios.requestJson(romAxios.post, svg_URL + "/user-svg", data);
 	return res;
 };
+// 更新用户SVG接口
+export const updateUserSVGApi = async (svgId, data) => {
+	const res = await romAxios.requestJson(romAxios.put, svg_URL + "/user-svg/" + svgId, data);
+	return res;
+};

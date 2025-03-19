@@ -104,6 +104,11 @@ const fetchUserSvg = async () => {
 // 添加交易
 const handleCreateTransaction = async () => {
 	amountValue.value = formatAmount(amountValue.value);
+	// 确保金额不为 0 或空值
+	if (!amountValue.value || parseFloat(amountValue.value) <= 0) {
+		showToast("金额必须大于 0");
+		return;
+	}
 	const transaction = {
 		expense: amountValue.value,
 		svg: iconName.value,
@@ -116,14 +121,14 @@ const handleCreateTransaction = async () => {
 		const { message } = await postTransactionApi(transaction);
 
 		showToast(message);
-		history.back();
+		router.push({ name: "bill" });
 	} catch (error) {
 		console.error("添加交易失败:", error);
 	}
 };
 // 关闭按钮
 const goBack = () => {
-	history.back();
+	router.push({ name: "bill" });
 };
 // 编辑按钮点击事件
 const goEditPage = () => {
