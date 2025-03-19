@@ -20,14 +20,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import SvgIcon from "@/components/SvgIcon.vue";
+import { useTransactionStore } from "@/stores/transactionStores";
 import { getUserSVGApi } from "@/apis/svg";
-
+const transactionStore = useTransactionStore();
 const router = useRouter();
 // 定义响应式数据
-const svgList = ref([]);
+const svgList = computed(() => transactionStore.userSvgList || []);
 
 onMounted(async () => {
 	await getUserSvg();
@@ -40,7 +41,7 @@ const goAddSvg = () => router.push({ name: "add-svg" });
 const getUserSvg = async () => {
 	try {
 		const { data } = await getUserSVGApi();
-		svgList.value = data; // 直接赋值分类列表
+		transactionStore.userSvgList = data; // 直接赋值分类列表
 	} catch (error) {
 		console.error("获取SVG失败:", error);
 	}

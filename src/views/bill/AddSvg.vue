@@ -18,17 +18,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import InputSvg from "@/components/bill/InputSvg.vue";
 import SvgBill from "@/components/bill/SvgBill.vue";
+import { useTransactionStore } from "@/stores/transactionStores";
 import { getSVGApi, postUserSVGApi } from "@/apis/svg";
-import { showToast } from "vant";
+const transactionStore = useTransactionStore();
 
 const categoryModel = ref("");
-const iconName = ref("");
-const category = ref("");
-const svgList = ref([]);
-
+const svgList = computed(() => transactionStore.allSvgList || []);
+const iconName = ref(svgList.value[0]?.svg_name);
+const category = ref(svgList.value[0]?.category);
 // 组件挂载时获取数据
 onMounted(() => {
 	fetchUserSvg();
@@ -37,7 +37,7 @@ onMounted(() => {
 const fetchUserSvg = async () => {
 	try {
 		const { data } = await getSVGApi();
-		svgList.value = data;
+		transactionStore.allSvgList = data;
 		// 初始化为第一个图标和分类
 		if (svgList.value.length > 0) {
 			iconName.value = svgList.value[0].svg_name;

@@ -13,11 +13,11 @@
 				</template>
 				<div class="step-total-title-right">
 					<p class="title">1月支出</p>
-					<p class="title">9.0</p>
+					<p class="title">{{ totalExpense }}</p>
 				</div>
 				<div class="step-total-title-left">
 					<p class="title">1月收入</p>
-					<p class="title">0.0</p>
+					<p class="title">{{ totalIncome }}</p>
 				</div>
 			</van-step>
 			<!-- 循环打印交易记录 -->
@@ -42,11 +42,14 @@
 	</div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import SvgIcon from "@/components/SvgIcon.vue";
+import { useTransactionStore } from "@/stores/transactionStores";
 import { getTransactionsApi } from "@/apis/transaction/index.js";
+import { showToast } from "vant";
+const transactionStore = useTransactionStore();
 // 初始化变量
-const transactions = ref([]);
+const transactions = computed(() => transactionStore.transactions);
 const totalIncome = ref(0);
 const totalExpense = ref(0);
 
@@ -57,19 +60,21 @@ onMounted(() => {
 const fetchTransactions = async () => {
 	try {
 		const { data } = await getTransactionsApi();
-		transactions.value = data;
-
-		// 计算总收入和总支出
-		totalIncome.value = transactions.value
-			.filter((t) => t.type === "income")
-			.reduce((sum, t) => sum + Number(t.amount), 0);
-
-		totalExpense.value = transactions.value
-			.filter((t) => t.type === "expense")
-			.reduce((sum, t) => sum + Number(t.amount), 0);
-	} catch (error) {
-		console.error("获取交易数据失败:", error);
+		transactionStore.transactions = data;
+		calculateTotals(); // 计算总收入和支出
+	} catch (errMsg) {
+		showToast(errMsg);
 	}
+};
+// 计算总收入和总支出
+const calculateTotals = () => {
+	totalIncome.value = transactions.value
+		.filter((t) => t.type === "income")
+		.reduce((sum, t) => sum + Number(t.amount), 0);
+
+	totalExpense.value = transactions.value
+		.filter((t) => t.type === "expense")
+		.reduce((sum, t) => sum + Number(t.amount), 0);
 };
 // 格式化日期
 const formatDate = (dateString) => {

@@ -40,29 +40,31 @@
 	/>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import CustomButton from "@/components/bill/CustomButton.vue";
 import InputBill from "@/components/bill/InputBill.vue";
 import SvgBill from "@/components/bill/SvgBill.vue";
 import SvgIcon from "@/components/SvgIcon.vue";
 import { useUtilsStore } from "@/stores/utilsStores";
+import { useTransactionStore } from "@/stores/transactionStores";
 import { postTransactionApi } from "@/apis/transaction";
 import { getUserSVGApi } from "@/apis/svg";
 const utilsStore = useUtilsStore();
+const transactionStore = useTransactionStore();
 const router = useRouter();
 // 控制 Calendar 组件显示
 const showCalendar = ref(false);
 const activeModel = ref("expense");
-const iconName = ref("");
-const category = ref("");
+
 // 初始化账单变量
 const amountValue = ref(""); // 金额
 const formattedDate = ref(utilsStore.formatDateToMMDD(new Date())); // 格式化后的日期
 const dateValue = ref(utilsStore.formatDateToYYYYMMDD(new Date())); // 传给后端的日期
 // 获取svg图标
-const svgList = ref([]);
-
+const svgList = computed(() => transactionStore.userSvgList || []);
+const iconName = ref(svgList.value[0]?.svg_name);
+const category = ref(svgList.value[0]?.category);
 onMounted(async () => {
 	await fetchUserSvg();
 });
@@ -70,7 +72,7 @@ onMounted(async () => {
 const fetchUserSvg = async () => {
 	try {
 		const { data } = await getUserSVGApi();
-		svgList.value = data;
+		transactionStore.userSvgList = data;
 		// 初始化为第一个图标和分类
 		if (svgList.value.length > 0) {
 			iconName.value = svgList.value[0].svg_name;
@@ -84,7 +86,7 @@ const fetchUserSvg = async () => {
 const handleCreateTransaction = async () => {
 	amountValue.value = formatAmount(amountValue.value);
 	const transaction = {
-		income: amountValue.value,
+		expense: amountValue.value,
 		svg: iconName.value,
 		category: category.value,
 		account: "支付宝",
@@ -93,6 +95,7 @@ const handleCreateTransaction = async () => {
 	};
 	try {
 		const { message } = await postTransactionApi(transaction);
+
 		showToast(message);
 		history.back();
 	} catch (error) {
