@@ -63,8 +63,32 @@ const formattedDate = ref(utilsStore.formatDateToMMDD(new Date())); // 格式化
 const dateValue = ref(utilsStore.formatDateToYYYYMMDD(new Date())); // 传给后端的日期
 // 获取svg图标
 const svgList = computed(() => transactionStore.userSvgList || []);
-const iconName = ref(svgList.value[0]?.svg_name);
-const category = ref(svgList.value[0]?.category);
+// const iconName = computed(() => svgList.value[0]?.svg_name);
+// const category = computed(() => svgList.value[0]?.category);
+// 计算属性 - 图标名称
+const selectedIcon = ref(null);
+const iconName = computed({
+	get: () => selectedIcon.value?.svg_name || transactionStore.userSvgList?.[0]?.svg_name,
+	set: (value) => {
+		if (selectedIcon.value) {
+			selectedIcon.value.svg_name = value;
+		} else {
+			selectedIcon.value = { svg_name: value };
+		}
+	},
+});
+
+// 计算属性 - 分类名称
+const category = computed({
+	get: () => selectedIcon.value?.category || transactionStore.userSvgList?.[0]?.category,
+	set: (value) => {
+		if (selectedIcon.value) {
+			selectedIcon.value.category = value;
+		} else {
+			selectedIcon.value = { category: value };
+		}
+	},
+});
 onMounted(async () => {
 	await fetchUserSvg();
 });

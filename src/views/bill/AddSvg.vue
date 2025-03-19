@@ -27,7 +27,19 @@ const transactionStore = useTransactionStore();
 
 const categoryModel = ref("");
 const svgList = computed(() => transactionStore.allSvgList || []);
-const iconName = ref(svgList.value[0]?.svg_name);
+// 计算属性 - 图标名称
+const selectedIcon = ref(null);
+const iconName = computed({
+	get: () => selectedIcon.value?.svg_name || transactionStore.allSvgList?.[0]?.svg_name,
+	set: (value) => {
+		if (selectedIcon.value) {
+			selectedIcon.value.svg_name = value;
+		} else {
+			selectedIcon.value = { svg_name: value };
+		}
+	},
+});
+
 // 组件挂载时获取数据
 onMounted(() => {
 	fetchUserSvg();

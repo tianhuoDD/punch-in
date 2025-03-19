@@ -90,7 +90,7 @@ const formatDate = (dateString) => {
 }
 .income {
 	position: relative;
-	left: -125px;
+	left: -128px;
 }
 .bill {
 	display: flex;
@@ -119,7 +119,7 @@ const formatDate = (dateString) => {
 .bill .van-steps {
 	display: flex;
 	justify-content: center;
-	padding-left: 110px;
+	padding-left: 137.7px; /* 步骤条位置 */
 	padding-top: 50px; /* 线条长度 */
 }
 /* 总计提示样式 */
@@ -145,7 +145,7 @@ const formatDate = (dateString) => {
 }
 .step-total-title-right {
 	position: absolute;
-	right: -15px;
+	right: -10px;
 	text-align: center;
 }
 .step-total-title-left {
