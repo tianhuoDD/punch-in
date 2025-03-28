@@ -1,24 +1,28 @@
 <template>
 	<div class="login-wrapper">
-		<!-- 欢迎文本 -->
-		<van-row class="welcome-text">
-			<span>你好，开发者!</span>
-		</van-row>
-		<!-- 其他登录方式 -->
-		<van-row>
-			<van-col :span="12" class="login-options" style="border-right: 1px solid var(--login-font-color)">
-				<svg-icon name="wechat_fill" />
-				<span>微信登录</span>
-			</van-col>
-			<van-col :span="12" class="login-options">
-				<svg-icon name="qq" />
-				<span>QQ登录</span>
-			</van-col>
-		</van-row>
-		<!-- 分隔线 -->
-		<van-divider :style="{ color: 'var(--login-font-color)' }"> 使用 PunchIn 账户登录 </van-divider>
+		<!-- (输入框聚焦时隐藏) -->
+		<div v-show="!isInputFocused">
+			<!-- 欢迎文本 -->
+			<van-row class="welcome-text">
+				<span>你好，开发者!</span>
+			</van-row>
+			<!-- 其他登录方式 -->
+			<van-row>
+				<van-col :span="12" class="login-options" style="border-right: 1px solid var(--login-font-color)">
+					<svg-icon name="wechat_fill" />
+					<span>微信登录</span>
+				</van-col>
+				<van-col :span="12" class="login-options">
+					<svg-icon name="qq" />
+					<span>QQ登录</span>
+				</van-col>
+			</van-row>
+			<!-- 分隔线 -->
+			<van-divider :style="{ color: 'var(--login-font-color)' }"> 使用 PunchIn 账户登录 </van-divider>
+		</div>
+		<div v-show="isInputFocused" style="height: 20vh"></div>
 		<!-- 登录表单 -->
-		<van-form style="margin-top: 20px" @submit="handleLoginSubmit" @failed="handleLoginFailed">
+		<van-form ref="loginFormRef" style="margin-top: 20px" @submit="handleLoginSubmit" @failed="handleLoginFailed">
 			<van-cell-group inset>
 				<van-field
 					v-model="username"
@@ -26,6 +30,8 @@
 					label="用户名"
 					placeholder="用户名 / 邮箱"
 					:rules="usernameRules"
+					@focus="isInputFocused = true"
+					@blur="isInputFocused = false"
 				/>
 				<van-field
 					v-model="password"
@@ -34,21 +40,27 @@
 					label="密码"
 					placeholder="密码"
 					:rules="passwordRules"
+					@focus="isInputFocused = true"
+					@blur="isInputFocused = false"
 				/>
 				<van-field name="protocol" label="复选框" :rules="protocolRules">
 					<template #input>
-						<van-checkbox v-model="isProtocolChecked" shape="square">
-							我同意 《PunchIn用户服务协议》《隐私权政策》
-						</van-checkbox>
+						<van-button class="invisible-button" @mousedown="handleProtocolMouseDown">
+							<van-checkbox v-model="isProtocolChecked" shape="square">
+								我同意 《PunchIn用户服务协议》《隐私权政策》
+							</van-checkbox>
+						</van-button>
 					</template>
 				</van-field>
 			</van-cell-group>
 			<div style="display: flex; justify-content: center; align-items: center">
-				<van-button plain type="primary" native-type="submit" class="login-reg-button">立即登录</van-button>
+				<van-button plain type="primary" native-type="submit" class="login-reg-button" @mousedown="handleMouseDown"
+					>立即登录</van-button
+				>
 			</div>
 		</van-form>
-		<!-- 注册、忘记密码按钮 -->
-		<van-row class="extra-actions">
+		<!-- 注册、忘记密码按钮（输入框聚焦时隐藏） -->
+		<van-row v-show="!isInputFocused" class="extra-actions">
 			<van-col :span="24">
 				<van-grid column-num="2">
 					<van-grid-item text="忘记密码" />
@@ -69,15 +81,39 @@ import { useUserStore } from "@/stores/userStores";
 const router = useRouter();
 const rulesStore = useRulesStore();
 const userStore = useUserStore();
+const loginFormRef = ref();
 // punch-in 登录
 const username = ref("");
 const password = ref("");
 // 隐私协议复选框
-const isProtocolChecked = ref();
+const isProtocolChecked = ref(false);
+// 是否聚焦于输入框
+const isInputFocused = ref(false);
 // 表单验证规则
 const usernameRules = [{ validator: rulesStore.usernameValidate, trigger: "onBlur" }];
 const passwordRules = [{ validator: rulesStore.passwordValidate, trigger: "onBlur" }];
 const protocolRules = [{ validator: rulesStore.protocolValidate, trigger: "onSubmit" }];
+/*  鼠标按下则触发按钮 - 解决输入框聚焦时，无法点击登录的问题
+		@rom:error 由于使用了@mousedown的原因，导致连续多次点击复选框按钮
+		时，复选框状态不会及时更新；可能时@mousedown事件，互相竞争，没有触发
+		event.target.closest()
+*/
+const handleProtocolMouseDown = (event) => {
+	event.preventDefault(); // 阻止默认行为，避免选中文本等问题
+
+	// 如果点击的元素是 van-checkbox，直接 return，避免多次触发
+	if (event.target.closest(".van-checkbox")) {
+		console.log("点击的是复选框，跳过 handleProtocolMouseDown");
+		return;
+	}
+	isProtocolChecked.value = !isProtocolChecked.value;
+};
+
+const handleMouseDown = (event) => {
+	event.preventDefault();
+	loginFormRef.value.submit();
+};
+
 // 提交表单成功或失败回调
 const handleLoginSubmit = async () => {
 	showLoadingToast("登录中...");
@@ -134,6 +170,10 @@ const goRegister = () => {
 	position: fixed;
 	width: 100%;
 	bottom: 0;
+	background-color: var(--login-bg);
+}
+.login-wrapper {
+	min-height: 600px;
 }
 .login-wrapper :deep(.van-grid-item__content) {
 	background: transparent;
@@ -146,5 +186,15 @@ const goRegister = () => {
 }
 .login-wrapper :deep(.van-grid-item__text) {
 	font-size: 18px;
+}
+/* 隐藏按钮 */
+.invisible-button {
+	background: none; /* 移除背景 */
+	border: none; /* 移除边框 */
+	padding: 0; /* 移除内边距 */
+	width: auto;
+	height: auto;
+	display: inline; /* 避免额外的块级占位 */
+	color: transparent; /* 让文字不可见 */
 }
 </style>

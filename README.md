@@ -330,7 +330,14 @@ import { BankCard } from "@icon-park/vue-next";
 </script>
 ```
 
-## 项目存在的问题
+## 项目存在的问题-未解决
 
 1. 优化svg图标引入，更换其他依赖；以减少build时间、fill颜色替换问题等。
 2. punch-in/src/components/bill/InputBill.vue 及 punch-in/src/views/bill/AddBill.vue 输入金额的优化
+
+## 项目中遇到的问题-已解决
+
+1. 输入框聚焦时，其他控件无法点击:
+   > 参考：https://blog.csdn.net/fifteen718/article/details/77429476
+   > 导航：punch-in/src/views/login/LoginView.vue
+   > 解决：为需要的控件使用 @mousedown

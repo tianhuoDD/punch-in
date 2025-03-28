@@ -2,6 +2,7 @@
 	<van-divider class="input-divider" style="margin-top: 10px" />
 	<van-field
 		v-model="formattedModel"
+		readonly
 		type="number"
 		class="input-bill"
 		placeholder="0.00"

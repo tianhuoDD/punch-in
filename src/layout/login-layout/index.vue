@@ -23,6 +23,6 @@ const goBack = () => {
 <style scoped>
 .login-layout-container {
 	background-color: var(--login-bg);
-	height: 100%;
+	min-height: 100%;
 }
 </style>
