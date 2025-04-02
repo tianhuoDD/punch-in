@@ -22,7 +22,7 @@
 		</div>
 		<div v-show="isInputFocused" style="height: 20vh"></div>
 		<!-- 登录表单 -->
-		<van-form ref="loginFormRef" style="margin-top: 20px" @submit="handleLoginSubmit" @failed="handleLoginFailed">
+		<van-form ref="loginFormRef" style="margin-top: 20px" validate-first>
 			<van-cell-group inset>
 				<van-field
 					v-model="username"
@@ -54,7 +54,7 @@
 				</van-field>
 			</van-cell-group>
 			<div style="display: flex; justify-content: center; align-items: center">
-				<van-button plain type="primary" native-type="submit" class="login-reg-button" @mousedown="handleMouseDown"
+				<van-button plain type="primary" native-type="submit" class="login-reg-button" @mousedown="handleLoginSubmit"
 					>立即登录</van-button
 				>
 			</div>
@@ -109,13 +109,11 @@ const handleProtocolMouseDown = (event) => {
 	isProtocolChecked.value = !isProtocolChecked.value;
 };
 
-const handleMouseDown = (event) => {
+// 提交表单
+const handleLoginSubmit = async (event) => {
 	event.preventDefault();
-	loginFormRef.value.submit();
-};
-
-// 提交表单成功或失败回调
-const handleLoginSubmit = async () => {
+	// 验证表单项
+	await loginFormRef.value.validate();
 	showLoadingToast("登录中...");
 	try {
 		const { message, data } = await postLoginApi({
@@ -133,13 +131,6 @@ const handleLoginSubmit = async () => {
 	} catch (errMsg) {
 		showToast(errMsg);
 	}
-};
-// 处理登录失败
-const handleLoginFailed = () => {
-	showLoadingToast("验证表单规则中...");
-	setTimeout(() => {
-		closeToast();
-	}, 0);
 };
 // 跳转注册页面
 const goRegister = () => {

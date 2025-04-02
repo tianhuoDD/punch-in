@@ -85,7 +85,7 @@ vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem + svg-sprite-loader
    pnpm -F=punch-in add -P @capacitor/core
    ```
 
-2. 第一次使用需构建app信息，会生成`capacitor.config.json`文件
+2. 第一次使用需构建app信息，会生成`capacitor.config.json`文件(此时需cd到`punch-in项目`文件夹内)
 
    ```shell
    # [appName] 是你的应用名称

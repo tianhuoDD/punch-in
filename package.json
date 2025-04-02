@@ -1,6 +1,6 @@
 {
 	"name": "punch-in",
-	"version": "0.4.2",
+	"version": "0.4.3",
 	"private": true,
 	"type": "module",
 	"scripts": {
@@ -33,7 +33,7 @@
 		]
 	},
 	"dependencies": {
-		"@capacitor/core": "^6.2.0",
+		"@capacitor/core": "^6.2.1",
 		"@icon-park/vue-next": "^1.4.2",
 		"@rom/axios": "workspace:^",
 		"axios": "^1.7.7",
@@ -43,8 +43,8 @@
 		"vue-router": "^4.3.3"
 	},
 	"devDependencies": {
-		"@capacitor/android": "^6.2.0",
-		"@capacitor/cli": "^6.2.0",
+		"@capacitor/android": "^6.2.1",
+		"@capacitor/cli": "^6.2.1",
 		"@vant/auto-import-resolver": "^1.2.1",
 		"@vitejs/plugin-vue": "^5.0.5",
 		"@vueuse/core": "^12.8.2",
