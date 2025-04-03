@@ -10,6 +10,11 @@ import { VantResolver } from "@vant/auto-import-resolver";
 /* SVG 图标插件 */
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import path from "path";
+
+/* 其他插件 */
+import vueDevTools from "vite-plugin-vue-devtools";
+// 引入打包体积分析插件
+import { visualizer } from "rollup-plugin-visualizer";
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
@@ -33,6 +38,16 @@ export default defineConfig({
 			inject: "body-first",
 			// 自定义插入的内容
 			customDomId: "svg-icons-dom",
+		}),
+		// 配置 vue-devtools，vue优化工具：ctrl+shift+alt+D打开
+		vueDevTools(),
+		// 配置打包体积分析
+		visualizer({
+			open: true, //注意这里要设置为true，否则无效
+			filename: "stats.html", //分析图生成的文件名
+			gzipSize: true, // 收集 gzip 大小并将其显示
+			brotliSize: true, // 收集 brotli 大小并将其显示
+			// template: "network",
 		}),
 	],
 	server: {

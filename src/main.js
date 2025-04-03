@@ -12,7 +12,7 @@ app.use(router);
 
 // vant组件引入
 import Vant from "vant";
-/* 
+/*
 @rom:error 添加 vant toast样式的原因：同时使用 Popup 和 Toast 会导致样式冲突，Toast样式变为白底。具体参见：https://blog.csdn.net/qq_37131375/article/details/133707824
 解决方式：可再次引入 toast 样式来解决
 更多的问题：当使用按需引入时，无需手动导入 showToast ，否则会导致样式问题。具体参见：https://vant-ui.github.io/vant/#/zh-CN/toast#an-xu-yin-ru-zu-jian-shi-shi-yong-showtoast-shi-chu-xian-yang-shi-yi-chang-wen-ti

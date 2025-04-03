@@ -4,7 +4,7 @@ PunchIn - 致力于做一款打卡、记账等功能的app.
 
 ## 项目基本架构
 
-vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem + svg-sprite-loader
+vue3(vite) + vant4
 
 ## 项目使用辅助
 
@@ -67,7 +67,7 @@ vue3(vite) + vant4 + amfe-flexible + postcss-pxtorem + svg-sprite-loader
 > 这里列出的是后添加的依赖
 
 1. 生产环境依赖：@capacitor/core + @rom/axios + vant
-2. 开发环境依赖：@capacitor/cli + @capacitor/android + @vant/auto-import-resolver + unplugin-vue-components + unplugin-auto-import + vite-plugin-svg-icons
+2. 开发环境依赖：@capacitor/cli + @capacitor/android + @vant/auto-import-resolver + unplugin-vue-components + unplugin-auto-import + vite-plugin-svg-icons + vite-plugin-vue-devtools + rollup-plugin-visualizer
 
 ### Capacitor: vue => android
 
@@ -333,7 +333,10 @@ import { BankCard } from "@icon-park/vue-next";
 ## 项目存在的问题-未解决
 
 1. 优化svg图标引入，更换其他依赖；以减少build时间、fill颜色替换问题等。
-2. punch-in/src/components/bill/InputBill.vue 及 punch-in/src/views/bill/AddBill.vue 输入金额的优化
+2. punch-in/src/components/bill/InputBill.vue 及 punch-in/src/views/bill/AddBill.vue 输入金额的优化。
+3. 按钮不允许频繁点击：例如punch-in/src/views/login/LoginView.vue中的`立即登录`按钮连续点击时，会导致发送多个请求，前几个请求因请求拦截而失败，弹出`无法访问服务器`的msg。
+4. 每次打包时间过长。与 1 一同解决。
+5. 项目体积减少 Vue DevTools进行分析
 
 ## 项目中遇到的问题-已解决
 

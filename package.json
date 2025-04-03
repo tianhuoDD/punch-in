@@ -53,9 +53,11 @@
 		"cz-git": "^1.11.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.2.10",
+		"rollup-plugin-visualizer": "^5.14.0",
 		"unplugin-auto-import": "^0.18.3",
 		"unplugin-vue-components": "^0.27.4",
 		"vite": "^5.3.1",
-		"vite-plugin-svg-icons": "^2.0.1"
+		"vite-plugin-svg-icons": "^2.0.1",
+		"vite-plugin-vue-devtools": "^7.7.2"
 	}
 }
