@@ -345,3 +345,4 @@ import { BankCard } from "@icon-park/vue-next";
    > 参考：https://blog.csdn.net/fifteen718/article/details/77429476
    > 导航：punch-in/src/views/login/LoginView.vue
    > 解决：为需要的控件使用 @mousedown
+2. .gitignore忽略文件不生效：使用：`git rm -r --cached .`清理缓存

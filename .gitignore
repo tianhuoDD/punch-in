@@ -23,7 +23,6 @@ node_modules
 # 忽略依赖锁文件
 pnpm-lock.yaml
 package-lock.json
-capacitor.config.ts
 
 # 忽略生成的构建缓存
 .vite
