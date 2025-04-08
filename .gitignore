@@ -31,3 +31,4 @@ capacitor.config.ts
 # 忽略打包文件
 dist
 android
+stats.html
