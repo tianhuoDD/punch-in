@@ -60,7 +60,7 @@ import { useRouter } from "vue-router";
 import "@/styles/loginFormField.css";
 import CaptchaButton from "@/components/login/CaptchaButton.vue";
 import { useRulesStore } from "@/stores/rulesStores";
-import { postRegisterApi } from "@/apis/login/index";
+import { postRegisterApi, postSendEmailCodeApi } from "@/apis/login/index";
 const router = useRouter();
 const rulesStore = useRulesStore();
 const registerFormRef = ref();
@@ -81,11 +81,13 @@ const protocolRules = [{ validator: rulesStore.protocolValidate, trigger: "onSub
 
 // 注册成功
 const handleRegisterSubmit = async () => {
+	showLoadingToast("注册中...");
 	try {
 		const { message } = await postRegisterApi({
 			username: username.value,
 			password: password.value,
 			email: email.value,
+			code: captcha.value,
 		});
 		showToast(message);
 		router.push({ name: "login" });
@@ -104,12 +106,14 @@ const handleRegisterFailed = () => {
 const sendCaptcha = async (callback) => {
 	try {
 		await registerFormRef.value.validate("email");
-		setTimeout(() => {
-			// 这里去执行实际的发送逻辑，比如 emits("sendCaptcha")
-			showToast("发送验证码成功,请查看邮箱...");
-			callback("success");
-		}, 500);
-	} catch {
+		const { message } = await postSendEmailCodeApi({
+			email: email.value,
+		});
+
+		showToast(message);
+		callback("success");
+	} catch (errMsg) {
+		showToast(errMsg);
 		callback("fail");
 	}
 };

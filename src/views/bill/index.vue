@@ -40,7 +40,14 @@
 			<!-- 最底部的笑脸提示 -->
 			<van-step style="margin-bottom: 120px">
 				<template #inactive-icon>
-					<svg-icon name="smile" padding="0px" width="30px" height="30px" color="var(--font-black-color)" />
+					<svg-icon
+						name="smile"
+						padding="0px"
+						width="30px"
+						height="30px"
+						color="var(--font-black-color)"
+						style="background-color: white"
+					/>
 				</template>
 			</van-step>
 		</van-steps>
@@ -101,6 +108,10 @@ const formatDate = (dateString) => {
 }
 .bill-steps {
 	flex: 1;
+}
+.bill-steps :deep(.van-steps__items) {
+	min-width: 108px;
+	max-width: 108px;
 }
 .bill :deep(.van-hairline) {
 	padding-left: 10px;

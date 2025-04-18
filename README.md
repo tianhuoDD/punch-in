@@ -338,6 +338,7 @@ import { BankCard } from "@icon-park/vue-next";
 4. ~~每次打包时间过长。与 1 一同解决。~~
 5. ~~项目体积减少 Vue DevTools、visualizer进行分析~~
 6. SVG插件导致打包时间延长：[查看具体说明](###svg图标引入)
+7. 重构`src/views/bill/index.vue`，其线条长度、左右对称都不科学
 
 ## 项目中遇到的问题-已解决
 
