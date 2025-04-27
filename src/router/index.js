@@ -97,6 +97,11 @@ const router = createRouter({
 					name: "register",
 					component: () => import("@/views/login/RegisterView.vue"),
 				},
+				{
+					path: "forget",
+					name: "forget",
+					component: () => import("@/views/login/ForgetView.vue"),
+				},
 			],
 		},
 		// 捕获所有未匹配的路径，跳转到 404 页面

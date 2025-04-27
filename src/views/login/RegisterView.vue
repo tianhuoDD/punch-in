@@ -60,7 +60,7 @@ import { useRouter } from "vue-router";
 import "@/styles/loginFormField.css";
 import CaptchaButton from "@/components/login/CaptchaButton.vue";
 import { useRulesStore } from "@/stores/rulesStores";
-import { postRegisterApi, postSendEmailCodeApi } from "@/apis/login/index";
+import { postRegisterApi, postSendEmailCodeApi, postVerifyEmailCodeApi } from "@/apis/login/index";
 const router = useRouter();
 const rulesStore = useRulesStore();
 const registerFormRef = ref();
@@ -78,11 +78,18 @@ const confirmPasswordRules = [{ validator: rulesStore.confirmPasswordValidate, t
 const emailRules = [{ validator: rulesStore.emailValidate, trigger: "onBlur" }];
 const captchaRules = [{ validator: rulesStore.captchaValidate, trigger: "onBlur" }];
 const protocolRules = [{ validator: rulesStore.protocolValidate, trigger: "onSubmit" }];
-
+// 验证验证码
+const handleCaptchaVerify = async () => {
+	await postVerifyEmailCodeApi({
+		email: email.value,
+		code: captcha.value,
+	});
+};
 // 注册成功
 const handleRegisterSubmit = async () => {
 	showLoadingToast("注册中...");
 	try {
+		await handleCaptchaVerify();
 		const { message } = await postRegisterApi({
 			username: username.value,
 			password: password.value,

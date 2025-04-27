@@ -58,13 +58,23 @@ export const useRulesStore = defineStore("rules", () => {
 		}
 		return true;
 	};
-	// 验证码验证方法
+	// 验证码验证方法 6位
 	const captchaValidate = (value) => {
 		if (!value) {
 			return "请输入验证码";
 		}
 		if (!/^\d{6}$/.test(value)) {
 			return "验证码应为6位数字";
+		}
+		return true;
+	};
+	// 验证码验证方法 4位
+	const securityValidate = (value) => {
+		if (!value) {
+			return "请输入验证码";
+		}
+		if (!/^\d{4}$/.test(value)) {
+			return "验证码应为4位数字";
 		}
 		return true;
 	};
@@ -82,5 +92,6 @@ export const useRulesStore = defineStore("rules", () => {
 		emailValidate,
 		captchaValidate,
 		protocolValidate,
+		securityValidate,
 	};
 });

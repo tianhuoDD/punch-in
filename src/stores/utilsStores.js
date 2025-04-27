@@ -74,11 +74,39 @@ export const useUtilsStore = defineStore("utils", () => {
 		const baseUrl = import.meta.env.VITE_APP_BASE_API;
 		return `${baseUrl.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
 	};
+	/**
+	 * 生成一个随机验证码
+	 * @param {number} length - 验证码的长度
+	 * @param {string} characterSet - 用于生成验证码的字符集（可以包含字母、数字、特殊字符等）
+	 * @returns {string} - 生成的随机验证码
+	 */
+	const generateRandomCode = (characterSet, length) => {
+		let randomCode = ""; // 初始化空字符串，用于存放生成的验证码
+		// 循环生成验证码，直到达到指定长度
+		for (let i = 0; i < length; i++) {
+			// 随机从字符集里选择一个字符并添加到验证码字符串中
+			randomCode += characterSet[randomNum(0, characterSet.length)];
+		}
+
+		return randomCode; // 返回生成的验证码
+	};
+
+	/**
+	 * 生成一个指定范围内的随机整数
+	 * @param {number} min - 随机数的最小值（包含）
+	 * @param {number} max - 随机数的最大值（不包含）
+	 * @returns {number} - 生成的随机整数
+	 */
+	const randomNum = (min, max) => {
+		return Math.floor(Math.random() * (max - min) + min); // 使用Math.random生成一个随机数并映射到指定范围
+	};
 	return {
 		calculateDaysDifference,
 		formatTime,
 		getImageUrl,
 		formatDateToYYYYMMDD,
 		formatDateToMMDD,
+		generateRandomCode,
+		randomNum,
 	};
 });

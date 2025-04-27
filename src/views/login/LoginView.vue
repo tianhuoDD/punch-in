@@ -9,12 +9,12 @@
 			<!-- 其他登录方式 -->
 			<van-row>
 				<van-col :span="12" class="login-options" style="border-right: 1px solid var(--login-font-color)">
-					<svg-icon name="wechat_fill" />
-					<span>微信登录</span>
-				</van-col>
-				<van-col :span="12" class="login-options">
 					<svg-icon name="qq" />
 					<span>QQ登录</span>
+				</van-col>
+				<van-col :span="12" class="login-options">
+					<svg-icon name="wechat_fill" />
+					<span>微信登录</span>
 				</van-col>
 			</van-row>
 			<!-- 分隔线 -->
@@ -63,7 +63,7 @@
 		<van-row v-show="!isInputFocused" class="extra-actions">
 			<van-col :span="24">
 				<van-grid column-num="2">
-					<van-grid-item text="忘记密码" />
+					<van-grid-item text="忘记密码" @click="goForget" />
 					<van-grid-item text="注册账号" @click="goRegister" />
 				</van-grid>
 			</van-col>
@@ -131,6 +131,10 @@ const handleLoginSubmit = async (event) => {
 	} catch (errMsg) {
 		showToast(errMsg);
 	}
+};
+// 跳转忘记密码页面
+const goForget = () => {
+	router.push({ name: "forget" });
 };
 // 跳转注册页面
 const goRegister = () => {
