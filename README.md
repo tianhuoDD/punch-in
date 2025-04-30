@@ -8,11 +8,12 @@ vue3(vite) + vant4
 
 ## 项目使用辅助
 
-1. 回退路由：`router.back()` 或 `history.back()`；不建议使用，而是直接跳转。
+1. 回退路由：`router.back()` 或 `history.back()`；不建议使用（当出现网络延迟时，会导致用户重复点击，跳转到预料外的页面），而是直接跳转。
 2. 前端的`apis`文件夹必须与后端`apis`文件夹内容对应
 3. 对于SVG引用，需要在`assets/icons`文件夹下导入。此外如果svg拥有分组属性，需要在`icons/`下另创文件夹，并在`createSvgIconsPlugin({iconDirs:[]})`中导入相应文件夹。
 4. 当某个页面需要组件时，`components`和`views`的文件夹应该一一对应。
-5. 对于页面的返回：`goBack()`
+5. 统一的命名方式
+   对于页面的返回：`goBack()`
    对于页面的跳转使用：`goPage()=>{router.push({name: page})}`
    对于逻辑的处理使用：`handleData()`
    对于验证输入的使用：`validateInput()`
@@ -23,7 +24,7 @@ vue3(vite) + vant4
 
    对于`v-model`属性定义**最好**使用：xxxModel
 
-6. JS部分：
+6. JS代码编写顺序：
 
    ```js
    /* 引用：上方为依赖引入；下方为组件引入 */
@@ -66,7 +67,7 @@ vue3(vite) + vant4
 
 > 这里列出的是后添加的依赖
 
-1. 生产环境依赖：@capacitor/core + @rom/axios + vant
+1. 生产环境依赖：@capacitor/core + @rom/axios + vant + jsencrypt
 2. 开发环境依赖：@capacitor/cli + @capacitor/android + @vant/auto-import-resolver + unplugin-vue-components + unplugin-auto-import + vite-plugin-svg-icons + vite-plugin-vue-devtools + rollup-plugin-visualizer
 
 ### Capacitor: vue => android
@@ -330,6 +331,8 @@ import { BankCard } from "@icon-park/vue-next";
 </script>
 ```
 
+### JSEncrypt RSA加密
+
 ## 项目存在的问题-未解决
 
 1. ~~优化svg图标引入，更换其他依赖；以减少build时间、fill颜色替换问题等。~~
@@ -347,3 +350,16 @@ import { BankCard } from "@icon-park/vue-next";
    > 导航：punch-in/src/views/login/LoginView.vue
    > 解决：为需要的控件使用 @mousedown
 2. .gitignore忽略文件不生效：使用：`git rm -r --cached .`清理缓存
+
+## 项目编写思想
+
+1. 忘记密码中，重置密码的API：应该携带`code`，否则用户可以直接获取请求链接，直接去修改密码。
+2. 登录时，请求的**密码应该加密**，避免被拦截。
+
+   > 其实前端加密就像防盗门一样，做的再结实也防不住爬窗的或者咚咚咚，不过我从没见过出门不锁门的勇士...——https://www.zhihu.com/question/25539382
+   >
+   > 前端哈希不是安全增强技术，而是社会工程缓冲层。（增加中间人获得明文密码的成本[防撞库]、用户看到请求的密码未加密[提高用户的观感]、社会学意义）
+
+   从原理上来讲，这种加密是无意义的，只要请求被拦截，直接伪造请求照样可以获得后端的数据；并且前端代码都是公开可见，这样的操作无非是增大破解难度。
+   但是，会破解、愿意破解的终究是少数，此方法是防君子不防小人的；对用户而言，直观的看到自己的密码被放在请求文件上，这是不可接受的，所以这是加密的原因。前端加密的意義不是為了防止中間人，而是**提供一種隱私保護服務**。
+   实际处理中，开发者无论如何都不能以任何途径获得用户密码；我建议前端使用RSA加密传输，后端解密后使用bcrypt单向加密存储到数据库。

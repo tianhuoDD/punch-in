@@ -78,9 +78,11 @@ import SvgIcon from "@/components/SvgIcon.vue";
 import { postLoginApi } from "@/apis/login/index";
 import { useRulesStore } from "@/stores/rulesStores";
 import { useUserStore } from "@/stores/userStores";
+import { useRSAStore } from "@/stores/rsaStores";
 const router = useRouter();
 const rulesStore = useRulesStore();
 const userStore = useUserStore();
+const rsaStore = useRSAStore();
 const loginFormRef = ref();
 // punch-in 登录
 const username = ref("");
@@ -116,9 +118,14 @@ const handleLoginSubmit = async (event) => {
 	await loginFormRef.value.validate();
 	showLoadingToast("登录中...");
 	try {
+		const rsaPassword = await rsaStore.encryptWithRSA(password.value); // 加密是异步的
+		if (!rsaPassword) {
+			showToast("密码加密失败，请联系管理员");
+			return;
+		}
 		const { message, data } = await postLoginApi({
 			username: username.value,
-			password: password.value,
+			password: rsaPassword,
 		});
 		if (data.token) {
 			userStore.setToken(data.token); // 存储 token
