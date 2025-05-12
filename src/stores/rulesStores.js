@@ -85,6 +85,20 @@ export const useRulesStore = defineStore("rules", () => {
 		}
 		return true;
 	};
+	// 用户名或邮箱验证方法
+	const usernameOrEmailValidate = (value) => {
+		if (!value) {
+			return "请输入用户名或邮箱";
+		}
+		const usernameCheck = usernameValidate(value);
+		const emailCheck = emailValidate(value);
+
+		if (usernameCheck === true || emailCheck === true) {
+			return true;
+		}
+		return "请输入有效的用户名（3-16位字母数字下划线）或邮箱地址";
+	};
+
 	return {
 		usernameValidate,
 		passwordValidate,
@@ -93,5 +107,6 @@ export const useRulesStore = defineStore("rules", () => {
 		captchaValidate,
 		protocolValidate,
 		securityValidate,
+		usernameOrEmailValidate,
 	};
 });

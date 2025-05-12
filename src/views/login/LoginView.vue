@@ -92,7 +92,7 @@ const isProtocolChecked = ref(false);
 // 是否聚焦于输入框
 const isInputFocused = ref(false);
 // 表单验证规则
-const usernameRules = [{ validator: rulesStore.usernameValidate, trigger: "onBlur" }];
+const usernameRules = [{ validator: rulesStore.usernameOrEmailValidate, trigger: "onBlur" }];
 const passwordRules = [{ validator: rulesStore.passwordValidate, trigger: "onBlur" }];
 const protocolRules = [{ validator: rulesStore.protocolValidate, trigger: "onSubmit" }];
 /*  鼠标按下则触发按钮 - 解决输入框聚焦时，无法点击登录的问题
