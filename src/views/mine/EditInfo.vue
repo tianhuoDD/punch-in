@@ -23,7 +23,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useUserStore } from "@/stores/userStores";
-import { postNicknameApi, postEmailApi } from "@/apis/user";
+import { putNicknameApi, putEmailApi } from "@/apis/user";
 import { postSendEmailCodeApi, postVerifyEmailCodeApi } from "@/apis/login";
 import CaptchaButton from "@/components/login/CaptchaButton.vue";
 
@@ -72,7 +72,7 @@ const onClickRight = async () => {
 		let updatedInfo = { ...userStore.userInfo };
 
 		if (field.value === "nickname") {
-			const { message } = await postNicknameApi({ nickname: newValue.value });
+			const { message } = await putNicknameApi({ nickname: newValue.value });
 			showToast(message);
 			updatedInfo.nickname = newValue.value; // 更新 Pinia 的 userInfo
 		} else if (field.value === "email") {
@@ -82,7 +82,7 @@ const onClickRight = async () => {
 				code: emailCode.value,
 			});
 			// 验证码成功后，更新邮箱
-			const { message: emailUpdateMessage } = await postEmailApi({
+			const { message: emailUpdateMessage } = await putEmailApi({
 				email: newValue.value,
 			});
 			showToast(emailUpdateMessage); // 邮箱修改成功
