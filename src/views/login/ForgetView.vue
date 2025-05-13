@@ -39,10 +39,8 @@
 						class="captcha-container"
 					>
 						<template #button>
-							<div @click="refreshCode()">
-								<!--验证码组件-->
-								<captcha-button @send-captcha="sendCaptcha" />
-							</div>
+							<!--验证码组件-->
+							<captcha-button @send-captcha="sendCaptcha" />
 						</template>
 					</van-field>
 				</van-cell-group>
