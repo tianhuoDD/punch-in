@@ -25,3 +25,8 @@ export const postVerifyEmailCodeApi = async (data) => {
 	const res = await romAxios.requestJson(romAxios.post, "/verify-email-code", data);
 	return res;
 };
+// 验证邮箱是否存在
+export const postCheckEmailExistApi = async (data) => {
+	const res = await romAxios.requestJson(romAxios.post, "/check-email-exist", data);
+	return res;
+};

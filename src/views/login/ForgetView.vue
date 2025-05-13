@@ -86,7 +86,12 @@ import CaptchaButton from "@/components/login/CaptchaButton.vue";
 import SecurityCode from "@/components/login/SecurityCode.vue";
 import { useRulesStore } from "@/stores/rulesStores";
 import { useUtilsStore } from "@/stores/utilsStores";
-import { postSendEmailCodeApi, postVerifyEmailCodeApi, postResetPasswordApi } from "@/apis/login/index";
+import {
+	postSendEmailCodeApi,
+	postVerifyEmailCodeApi,
+	postResetPasswordApi,
+	postCheckEmailExistApi,
+} from "@/apis/login";
 
 const router = useRouter();
 const rulesStore = useRulesStore();
@@ -123,7 +128,16 @@ const handleEmailSubmit = async () => {
 		 */
 		// 触发子组件的 @send-captcha 事件
 		// emit("send-captcha");
-		activeStep.value = 1;
+
+		try {
+			// 验证邮箱是否存在
+			await postCheckEmailExistApi({
+				email: email.value,
+			});
+			activeStep.value = 1;
+		} catch (errMsg) {
+			showToast(errMsg);
+		}
 	} else {
 		showToast("验证码错误,请重新输入");
 	}
@@ -133,7 +147,7 @@ const sendCaptcha = async (callback) => {
 	try {
 		const { message } = await postSendEmailCodeApi({
 			email: email.value,
-			repeatability: false,
+			email_must_be_unique: false,
 		});
 		showToast(message);
 		callback("success");
